@@ -1,0 +1,95 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+# in the schema we will be doing Query and Mutations
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type User {
+  id: Int!
+  firstName: String!
+  lastName: String!
+  age: Int!
+  email: String!
+  phone: String!
+  address: [Address!]!
+}
+
+input UserInput {
+  firstName: String!
+  lastName: String!
+  age: Int!
+  email: String!
+  phone: String!
+  address: [AddressInput!]!
+}
+
+type Address {
+  id: Int!
+  addressLine: String!
+  city: String!
+  postalCode: Int!
+  country: String!
+  userId: Int!
+}
+
+input AddressInput {
+  addressLine: String!
+  city: String!
+  postalCode: Int!
+  country: String!
+}
+
+type Product {
+  id: Int!
+  name: String!
+  description: String!
+  price: Float!
+  rating: Float!
+  stock: Int!
+  image: [Image!]!
+  category: [Category!]!
+}
+
+type Image {
+  id: Int!
+  url: String!
+  productId: Int!
+}
+
+type Category {
+id: Int!
+name: String!
+}
+
+input ProductInput {
+  name: String!
+  description: String!
+  price: Float!
+  rating: Float!
+  stock: Int!
+  images: [ImageInput!]!
+  categories: [CategoryInput!]!
+}
+
+input ImageInput {
+  url: String!
+}
+
+input CategoryInput {
+  name: String!
+}
+
+type Query {
+  users: [User!]!
+  getProducts: [Product!]!
+  getProductById(id: Int!): Product
+}
+
+type Mutation {
+  createUser(input: UserInput!): User!
+  createProducts(input: ProductInput!): Product!
+}
