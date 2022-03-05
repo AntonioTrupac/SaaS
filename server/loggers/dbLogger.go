@@ -1,20 +1,21 @@
-package dbLogger
+package logger
 
 import (
-	"gorm.io/gorm/logger"
 	"log"
 	"os"
 	"time"
+
+	dbLog "gorm.io/gorm/logger"
 )
 
-func LogGORM() logger.Interface {
-	newLogger := logger.New(
+func LogGORM() dbLog.Interface {
+	newLogger := dbLog.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
-		logger.Config{
+		dbLog.Config{
 			SlowThreshold:             time.Second, // Slow SQL threshold
-			LogLevel:                  logger.Info, // Log level
-			IgnoreRecordNotFoundError: true,        // Ignore ErrRecordNotFound error for logger
-			Colorful:                  true,        // Disable color
+			LogLevel:                  dbLog.Info,  // Log level
+			IgnoreRecordNotFoundError: false,       // Ignore ErrRecordNotFound error for logger
+			Colorful:                  false,       // Disable color
 		},
 	)
 	return newLogger

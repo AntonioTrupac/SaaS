@@ -3,14 +3,16 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"log"
+	"net/http"
+	"os"
+
 	"github.com/AntonioTrupac/hannaWebshop/graph/resolver"
+	logger "github.com/AntonioTrupac/hannaWebshop/loggers"
 	"github.com/AntonioTrupac/hannaWebshop/model"
 	productService "github.com/AntonioTrupac/hannaWebshop/service/products"
 	userService "github.com/AntonioTrupac/hannaWebshop/service/users"
 	"github.com/joho/godotenv"
-	"log"
-	"net/http"
-	"os"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -24,10 +26,11 @@ import (
 var database *gorm.DB
 
 func main() {
+	// logger.InitLogger()
 	err := godotenv.Load(".env")
 
 	if err != nil {
-		log.Fatalf("Error loading .env file")
+		logger.Fatal("Error loading .env file")
 	}
 
 	port := os.Getenv("PORT")
@@ -36,6 +39,7 @@ func main() {
 	}
 
 	initDB()
+
 	productsService := productService.NewProducts(database)
 	usersService := userService.NewUsers(database)
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: resolver.NewResolver(usersService, productsService)}))
@@ -44,7 +48,7 @@ func main() {
 	http.Handle("/query", srv)
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	// logger.Fatal("", http.ListenAndServe(":"+port, nil))
 }
 
 func initDB() {
@@ -65,13 +69,11 @@ func initDB() {
 
 	if err != nil {
 		fmt.Println(err.Error())
+
 		panic("FAILED TO CONNECT TO DB")
 	}
 
 	err = migrate(database)
-	if err != nil {
-		return
-	}
 
 	if err != nil {
 		fmt.Println(err)
