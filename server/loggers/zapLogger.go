@@ -137,6 +137,12 @@ func New(opts ...ZapLoggerOption) *ZapLogger {
 
 	var core zapcore.Core
 
+	if s.storeInDay {
+		core = dayLogger(s.path, s.prefix, s.days, s.debug)
+	} else {
+		core = sizeLogger(s.path, s.prefix, s.debug)
+	}
+
 	log := zap.New(core)
 
 	if s.addCaller {

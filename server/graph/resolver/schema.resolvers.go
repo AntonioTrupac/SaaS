@@ -5,6 +5,7 @@ package resolver
 
 import (
 	"context"
+
 	"github.com/AntonioTrupac/hannaWebshop/graph/generated"
 	"github.com/AntonioTrupac/hannaWebshop/graph/mapper"
 	"github.com/AntonioTrupac/hannaWebshop/graph/types"
@@ -38,6 +39,7 @@ func (r *queryResolver) Users(ctx context.Context) ([]*generated.User, error) {
 	users, err := r.users.GetUsers()
 
 	if err != nil {
+
 		return nil, err
 	}
 

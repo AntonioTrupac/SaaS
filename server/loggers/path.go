@@ -12,7 +12,9 @@ import (
 func defaultLogPath(path string) string {
 	var err error
 	var p string
+
 	p, err = getCurrentExecDir()
+
 	if err != nil {
 		p, err = os.UserHomeDir()
 		if err != nil {

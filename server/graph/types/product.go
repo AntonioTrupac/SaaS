@@ -2,6 +2,7 @@ package types
 
 import (
 	"context"
+
 	"github.com/AntonioTrupac/hannaWebshop/graph/generated"
 	helpers "github.com/AntonioTrupac/hannaWebshop/graph/types/helpers"
 	"github.com/AntonioTrupac/hannaWebshop/model"
@@ -107,6 +108,7 @@ func mapGeneratedCategoriesToProduct(categoryInput []*model.Category) []*generat
 // GeneratedProduct => returns a product after it is created via mutation CreateProducts
 func GeneratedProduct(product *model.Product) *generated.Product {
 	return &generated.Product{
+		ID:          int(product.ID),
 		Price:       product.Price,
 		Name:        product.Name,
 		Description: product.Description,

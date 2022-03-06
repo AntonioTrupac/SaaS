@@ -15,7 +15,7 @@ func LogGORM() dbLog.Interface {
 			SlowThreshold:             time.Second, // Slow SQL threshold
 			LogLevel:                  dbLog.Info,  // Log level
 			IgnoreRecordNotFoundError: false,       // Ignore ErrRecordNotFound error for logger
-			Colorful:                  false,       // Disable color
+			Colorful:                  true,
 		},
 	)
 	return newLogger

@@ -8,11 +8,12 @@ import (
 	"os"
 
 	"github.com/AntonioTrupac/hannaWebshop/graph/resolver"
-	logger "github.com/AntonioTrupac/hannaWebshop/loggers"
+	logging "github.com/AntonioTrupac/hannaWebshop/loggers"
 	"github.com/AntonioTrupac/hannaWebshop/model"
 	productService "github.com/AntonioTrupac/hannaWebshop/service/products"
 	userService "github.com/AntonioTrupac/hannaWebshop/service/users"
 	"github.com/joho/godotenv"
+	"go.uber.org/zap/zapcore"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -26,16 +27,24 @@ import (
 var database *gorm.DB
 
 func main() {
-	// logger.InitLogger()
 	err := godotenv.Load(".env")
 
+	myLog := logging.New(
+		logging.WithDebug(),
+		logging.WithCaller(),
+		logging.WithLevel(zapcore.InfoLevel),
+	)
+
+	defer myLog.Log.Sync()
+
 	if err != nil {
-		logger.Fatal("Error loading .env file")
+		// logger.Fatal("Error loading .env file")
+		myLog.Fatal("Error loading .env file")
 	}
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		panic("Cannot read port from environment!")
+		myLog.Panic("Cannot read port from environment!")
 	}
 
 	initDB()
@@ -47,8 +56,8 @@ func main() {
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)
 
-	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
-	// logger.Fatal("", http.ListenAndServe(":"+port, nil))
+	myLog.Infof("connect to http://localhost:%s/ for GraphQL playground", port)
+	myLog.Fatalf("", http.ListenAndServe(":"+port, nil))
 }
 
 func initDB() {
@@ -60,6 +69,11 @@ func initDB() {
 	}
 
 	dbSql, err := sql.Open("mysql", dsn)
+
+	if err != nil {
+		fmt.Print("ERRROR")
+	}
+
 	database, err = gorm.Open(mysql.New(mysql.Config{
 		Conn: dbSql,
 	}), &gorm.Config{
