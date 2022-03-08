@@ -9,6 +9,9 @@ import (
 	"github.com/AntonioTrupac/hannaWebshop/graph/generated"
 	"github.com/AntonioTrupac/hannaWebshop/graph/mapper"
 	"github.com/AntonioTrupac/hannaWebshop/graph/types"
+	"github.com/AntonioTrupac/hannaWebshop/helpers"
+
+	logging "github.com/sirupsen/logrus"
 )
 
 func (r *mutationResolver) CreateUser(ctx context.Context, input generated.UserInput) (*generated.User, error) {
@@ -17,7 +20,9 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input generated.UserI
 	err := r.users.CreateAUser(user)
 
 	if err != nil {
-		return nil, err
+		logging.Errorf("mutation CreateUser: %v", err)
+
+		return nil, helpers.DoFmtError("Error while creating a user")
 	}
 
 	return mapper.GeneratedUser(user), nil
@@ -29,7 +34,7 @@ func (r *mutationResolver) CreateProducts(ctx context.Context, input generated.P
 	err := r.products.CreateAProduct(product)
 
 	if err != nil {
-		return nil, err
+		return nil, helpers.DoFmtError("Error while creating products")
 	}
 
 	return types.GeneratedProduct(product), nil
@@ -50,7 +55,7 @@ func (r *queryResolver) GetProducts(ctx context.Context) ([]*generated.Product, 
 	products, err := r.products.GetProducts()
 
 	if err != nil {
-		return nil, err
+		return nil, helpers.DoFmtError("Error while getting all products!")
 	}
 
 	return types.GetProductsFromDb(products), nil
@@ -60,7 +65,7 @@ func (r *queryResolver) GetProductByID(ctx context.Context, id int) (*generated.
 	product, err := r.products.GetProductById(id)
 
 	if err != nil {
-		return nil, err
+		return nil, helpers.DoFmtError("Error while getting product by ID!")
 	}
 
 	return types.GetProductFromDb(product), nil

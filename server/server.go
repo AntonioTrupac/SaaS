@@ -8,12 +8,10 @@ import (
 	"os"
 
 	"github.com/AntonioTrupac/hannaWebshop/graph/resolver"
-	logging "github.com/AntonioTrupac/hannaWebshop/loggers"
 	"github.com/AntonioTrupac/hannaWebshop/model"
 	productService "github.com/AntonioTrupac/hannaWebshop/service/products"
 	userService "github.com/AntonioTrupac/hannaWebshop/service/users"
 	"github.com/joho/godotenv"
-	"go.uber.org/zap/zapcore"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -22,29 +20,35 @@ import (
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/AntonioTrupac/hannaWebshop/graph/generated"
 	logDB "github.com/AntonioTrupac/hannaWebshop/loggers"
+	logging "github.com/sirupsen/logrus"
 )
 
 var database *gorm.DB
 
+func initLog() {
+	logging.SetOutput(os.Stdout)
+	logging.SetFormatter(&logging.JSONFormatter{})
+	logLevel, err := logging.ParseLevel(os.Getenv("LOG_LEVEL"))
+
+	if err != nil {
+		logLevel = logging.InfoLevel
+	}
+
+	logging.SetLevel(logLevel)
+}
+
 func main() {
 	err := godotenv.Load(".env")
 
-	myLog := logging.New(
-		logging.WithDebug(),
-		logging.WithCaller(),
-		logging.WithLevel(zapcore.InfoLevel),
-	)
-
-	defer myLog.Log.Sync()
+	initLog()
 
 	if err != nil {
-		// logger.Fatal("Error loading .env file")
-		myLog.Fatal("Error loading .env file")
+		logging.Fatal("Error loading .env file")
 	}
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		myLog.Panic("Cannot read port from environment!")
+		logging.Panic("Cannot read port from environment!")
 	}
 
 	initDB()
@@ -56,8 +60,8 @@ func main() {
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)
 
-	myLog.Infof("connect to http://localhost:%s/ for GraphQL playground", port)
-	myLog.Fatalf("", http.ListenAndServe(":"+port, nil))
+	fmt.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
+	log.Fatal("", http.ListenAndServe(":"+port, nil))
 }
 
 func initDB() {
@@ -65,13 +69,13 @@ func initDB() {
 	dsn := os.Getenv("DSN")
 
 	if dsn == "" {
-		log.Fatalf("DSN string is empty")
+		logging.Fatalf("DSN string is empty")
 	}
 
 	dbSql, err := sql.Open("mysql", dsn)
 
 	if err != nil {
-		fmt.Print("ERRROR")
+		logging.Error("Something went wrong with the DSN")
 	}
 
 	database, err = gorm.Open(mysql.New(mysql.Config{
@@ -83,15 +87,14 @@ func initDB() {
 
 	if err != nil {
 		fmt.Println(err.Error())
-
-		panic("FAILED TO CONNECT TO DB")
+		logging.Panic("FAILED TO CONNECT TO DB")
 	}
 
 	err = migrate(database)
 
 	if err != nil {
 		fmt.Println(err)
-		panic("MODELS NOT ADDED")
+		logging.Panic("MODELS NOT ADDED")
 	}
 }
 

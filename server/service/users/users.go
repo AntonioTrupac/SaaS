@@ -1,7 +1,6 @@
 package service
 
 import (
-	logger "github.com/AntonioTrupac/hannaWebshop/loggers"
 	"github.com/AntonioTrupac/hannaWebshop/model"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -13,8 +12,7 @@ type UserService interface {
 }
 
 type users struct {
-	DB     *gorm.DB
-	Logger *logger.Logger
+	DB *gorm.DB
 }
 
 func NewUsers(db *gorm.DB) UserService {
@@ -27,11 +25,9 @@ func (u *users) GetUsers() ([]*model.User, error) {
 	var users []*model.User
 
 	if err := u.DB.Find(&users).Error; err != nil {
-		u.Logger.Info("EXECUTED!")
 		return nil, err
 		//fmt.Errorf GOOGLE ME CHUCK
 	}
-	u.Logger.Info("EXECUTED!")
 
 	return users, nil
 }
