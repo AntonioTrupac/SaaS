@@ -1,6 +1,8 @@
 package service
 
 import (
+	"fmt"
+
 	"github.com/AntonioTrupac/hannaWebshop/model"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -25,8 +27,7 @@ func (u *users) GetUsers() ([]*model.User, error) {
 	var users []*model.User
 
 	if err := u.DB.Find(&users).Error; err != nil {
-		return nil, err
-		//fmt.Errorf GOOGLE ME CHUCK
+		return nil, fmt.Errorf("/getUsers: Error getting users from the database! %v", err)
 	}
 
 	return users, nil
