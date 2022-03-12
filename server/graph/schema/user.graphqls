@@ -1,0 +1,31 @@
+type User implements Actor & Node {
+  id: Int!
+  firstName: String!
+  lastName: String!
+  age: Int!
+  email: String!
+  password: String!
+  phone: String!
+  address: [Address!]!
+  moods: [Moods]
+  habits: [Habits]
+}
+
+input UserInput {
+  firstName: String!
+  lastName: String!
+  age: Int!
+  email: String!
+  phone: String!
+  address: [AddressInput!]!
+  moods: [MoodsInput]
+  habits: [HabitsInput]
+}
+
+extend type Query {
+  users: [User!]!
+}
+
+extend type Mutation {
+  createUser(input: UserInput!): User!
+}

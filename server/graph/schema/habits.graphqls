@@ -1,0 +1,38 @@
+type Habits {
+    id: Int!
+    name: String!
+    user_id: String!
+    habitSetting: HabitSettings
+}
+
+input HabitsInput {
+    name: String!
+    habitSetting: HabitSettingsInput
+}
+
+type HabitSettings {
+    id: Int!
+    complete: Int!
+    failed: Int!
+    skipped: Int!
+    total: Int!
+    currentStreak: Int!
+    habit_id: Int!
+}
+
+input HabitSettingsInput {
+    complete: Int!
+    failed: Int!
+    skipped: Int!
+    total: Int!
+    currentStreak: Int!
+}
+
+extend type Query {
+    getHabits: [Habits!]!
+    getHabitsById(id: Int!): Habits
+}
+
+extend type Mutation {
+    createHabits(input: HabitsInput!): Habits!
+}

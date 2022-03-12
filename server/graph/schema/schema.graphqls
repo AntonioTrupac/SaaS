@@ -1,46 +1,19 @@
-# GraphQL schema example
-#
-# https://gqlgen.com/getting-started/
-
-# in the schema we will be doing Query and Mutations
 schema {
   query: Query
   mutation: Mutation
 }
 
-type User {
+interface Node {
   id: Int!
+}
+
+interface Actor {
   firstName: String!
   lastName: String!
   age: Int!
   email: String!
+  password: String!
   phone: String!
-  address: [Address!]!
-}
-
-input UserInput {
-  firstName: String!
-  lastName: String!
-  age: Int!
-  email: String!
-  phone: String!
-  address: [AddressInput!]!
-}
-
-type Address {
-  id: Int!
-  addressLine: String!
-  city: String!
-  postalCode: Int!
-  country: String!
-  userId: Int!
-}
-
-input AddressInput {
-  addressLine: String!
-  city: String!
-  postalCode: Int!
-  country: String!
 }
 
 type Product {
@@ -61,8 +34,8 @@ type Image {
 }
 
 type Category {
-id: Int!
-name: String!
+  id: Int!
+  name: String!
 }
 
 input ProductInput {
@@ -84,12 +57,10 @@ input CategoryInput {
 }
 
 type Query {
-  users: [User!]!
   getProducts: [Product!]!
   getProductById(id: Int!): Product
 }
 
 type Mutation {
-  createUser(input: UserInput!): User!
   createProducts(input: ProductInput!): Product!
 }

@@ -2,6 +2,14 @@
 
 package generated
 
+type Actor interface {
+	IsActor()
+}
+
+type Node interface {
+	IsNode()
+}
+
 type Address struct {
 	ID          int    `json:"id"`
 	AddressLine string `json:"addressLine"`
@@ -27,6 +35,36 @@ type CategoryInput struct {
 	Name string `json:"name"`
 }
 
+type HabitSettings struct {
+	ID            int `json:"id"`
+	Complete      int `json:"complete"`
+	Failed        int `json:"failed"`
+	Skipped       int `json:"skipped"`
+	Total         int `json:"total"`
+	CurrentStreak int `json:"currentStreak"`
+	HabitID       int `json:"habit_id"`
+}
+
+type HabitSettingsInput struct {
+	Complete      int `json:"complete"`
+	Failed        int `json:"failed"`
+	Skipped       int `json:"skipped"`
+	Total         int `json:"total"`
+	CurrentStreak int `json:"currentStreak"`
+}
+
+type Habits struct {
+	ID           int            `json:"id"`
+	Name         string         `json:"name"`
+	UserID       string         `json:"user_id"`
+	HabitSetting *HabitSettings `json:"habitSetting"`
+}
+
+type HabitsInput struct {
+	Name         string              `json:"name"`
+	HabitSetting *HabitSettingsInput `json:"habitSetting"`
+}
+
 type Image struct {
 	ID        int    `json:"id"`
 	URL       string `json:"url"`
@@ -35,6 +73,18 @@ type Image struct {
 
 type ImageInput struct {
 	URL string `json:"url"`
+}
+
+type Moods struct {
+	ID     string `json:"id"`
+	Name   string `json:"name"`
+	Notes  string `json:"notes"`
+	UserID int    `json:"user_id"`
+}
+
+type MoodsInput struct {
+	Name  string `json:"name"`
+	Notes string `json:"notes"`
 }
 
 type Product struct {
@@ -64,9 +114,15 @@ type User struct {
 	LastName  string     `json:"lastName"`
 	Age       int        `json:"age"`
 	Email     string     `json:"email"`
+	Password  string     `json:"password"`
 	Phone     string     `json:"phone"`
 	Address   []*Address `json:"address"`
+	Moods     []*Moods   `json:"moods"`
+	Habits    []*Habits  `json:"habits"`
 }
+
+func (User) IsActor() {}
+func (User) IsNode()  {}
 
 type UserInput struct {
 	FirstName string          `json:"firstName"`
@@ -75,4 +131,6 @@ type UserInput struct {
 	Email     string          `json:"email"`
 	Phone     string          `json:"phone"`
 	Address   []*AddressInput `json:"address"`
+	Moods     []*MoodsInput   `json:"moods"`
+	Habits    []*HabitsInput  `json:"habits"`
 }

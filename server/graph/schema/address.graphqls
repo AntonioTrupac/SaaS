@@ -1,0 +1,15 @@
+type Address {
+    id: Int!
+    addressLine: String!
+    city: String!
+    postalCode: Int!
+    country: String!
+    userId: Int!
+}
+
+input AddressInput {
+    addressLine: String!
+    city: String!
+    postalCode: Int!
+    country: String!
+}

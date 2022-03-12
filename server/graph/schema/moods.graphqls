@@ -1,0 +1,20 @@
+type Moods {
+    id: ID!
+    name: String!
+    notes: String!
+    user_id: Int!
+}
+
+input MoodsInput {
+    name: String!
+    notes: String!
+}
+
+extend type Query {
+    getMoods: [Moods!]!
+    getMoodById(id: Int!): Moods!
+}
+
+extend type Mutation {
+    createMoods(input: MoodsInput!): Moods
+}

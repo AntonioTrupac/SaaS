@@ -7,25 +7,8 @@ import (
 	"context"
 
 	"github.com/AntonioTrupac/hannaWebshop/graph/generated"
-	"github.com/AntonioTrupac/hannaWebshop/graph/mapper"
 	"github.com/AntonioTrupac/hannaWebshop/graph/types"
-
-	logging "github.com/sirupsen/logrus"
 )
-
-func (r *mutationResolver) CreateUser(ctx context.Context, input generated.UserInput) (*generated.User, error) {
-	user := types.ModelUser(ctx, input)
-
-	err := r.users.CreateAUser(user)
-
-	if err != nil {
-		logging.Errorf("mutation CreateUser: %v", err)
-
-		return nil, err
-	}
-
-	return mapper.GeneratedUser(user), nil
-}
 
 func (r *mutationResolver) CreateProducts(ctx context.Context, input generated.ProductInput) (*generated.Product, error) {
 	product := types.ModelProducts(ctx, input)
@@ -37,17 +20,6 @@ func (r *mutationResolver) CreateProducts(ctx context.Context, input generated.P
 	}
 
 	return types.GeneratedProduct(product), nil
-}
-
-func (r *queryResolver) Users(ctx context.Context) ([]*generated.User, error) {
-	users, err := r.users.GetUsers()
-
-	if err != nil {
-
-		return nil, err
-	}
-
-	return mapper.Users(users), nil
 }
 
 func (r *queryResolver) GetProducts(ctx context.Context) ([]*generated.Product, error) {
