@@ -42,7 +42,7 @@ type HabitSettings struct {
 	Skipped       int `json:"skipped"`
 	Total         int `json:"total"`
 	CurrentStreak int `json:"currentStreak"`
-	HabitID       int `json:"habit_id"`
+	HabitID       int `json:"habitId"`
 }
 
 type HabitSettingsInput struct {
@@ -56,7 +56,7 @@ type HabitSettingsInput struct {
 type Habits struct {
 	ID           int            `json:"id"`
 	Name         string         `json:"name"`
-	UserID       string         `json:"user_id"`
+	UserID       string         `json:"userId"`
 	HabitSetting *HabitSettings `json:"habitSetting"`
 }
 
@@ -76,10 +76,10 @@ type ImageInput struct {
 }
 
 type Moods struct {
-	ID     string `json:"id"`
+	ID     int    `json:"id"`
 	Name   string `json:"name"`
 	Notes  string `json:"notes"`
-	UserID int    `json:"user_id"`
+	UserID int    `json:"userId"`
 }
 
 type MoodsInput struct {
@@ -117,7 +117,7 @@ type User struct {
 	Password  string     `json:"password"`
 	Phone     string     `json:"phone"`
 	Address   []*Address `json:"address"`
-	Moods     []*Moods   `json:"moods"`
+	Moods     *Moods     `json:"moods"`
 	Habits    []*Habits  `json:"habits"`
 }
 
@@ -131,6 +131,6 @@ type UserInput struct {
 	Email     string          `json:"email"`
 	Phone     string          `json:"phone"`
 	Address   []*AddressInput `json:"address"`
-	Moods     []*MoodsInput   `json:"moods"`
+	Moods     *MoodsInput     `json:"moods"`
 	Habits    []*HabitsInput  `json:"habits"`
 }

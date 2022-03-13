@@ -1,7 +1,7 @@
 type Habits {
     id: Int!
     name: String!
-    user_id: String!
+    userId: String!
     habitSetting: HabitSettings
 }
 
@@ -17,7 +17,7 @@ type HabitSettings {
     skipped: Int!
     total: Int!
     currentStreak: Int!
-    habit_id: Int!
+    habitId: Int!
 }
 
 input HabitSettingsInput {

@@ -8,7 +8,7 @@ import (
 	"github.com/AntonioTrupac/hannaWebshop/model"
 )
 
-// Products map for query get products
+// GetProductsFromDb Products map for query get products
 func GetProductsFromDb(products []*model.Product) []*generated.Product {
 	var out []*generated.Product
 

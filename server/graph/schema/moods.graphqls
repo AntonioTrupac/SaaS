@@ -1,8 +1,8 @@
 type Moods {
-    id: ID!
+    id: Int!
     name: String!
     notes: String!
-    user_id: Int!
+    userId: Int!
 }
 
 input MoodsInput {

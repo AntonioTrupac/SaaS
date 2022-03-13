@@ -237,7 +237,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.HabitSettings.Failed(childComplexity), true
 
-	case "HabitSettings.habit_id":
+	case "HabitSettings.habitId":
 		if e.complexity.HabitSettings.HabitID == nil {
 			break
 		}
@@ -286,7 +286,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Habits.Name(childComplexity), true
 
-	case "Habits.user_id":
+	case "Habits.userId":
 		if e.complexity.Habits.UserID == nil {
 			break
 		}
@@ -335,7 +335,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Moods.Notes(childComplexity), true
 
-	case "Moods.user_id":
+	case "Moods.userId":
 		if e.complexity.Moods.UserID == nil {
 			break
 		}
@@ -662,7 +662,7 @@ input AddressInput {
 	{Name: "graph/schema/habits.graphqls", Input: `type Habits {
     id: Int!
     name: String!
-    user_id: String!
+    userId: String!
     habitSetting: HabitSettings
 }
 
@@ -678,7 +678,7 @@ type HabitSettings {
     skipped: Int!
     total: Int!
     currentStreak: Int!
-    habit_id: Int!
+    habitId: Int!
 }
 
 input HabitSettingsInput {
@@ -698,10 +698,10 @@ extend type Mutation {
     createHabits(input: HabitsInput!): Habits!
 }`, BuiltIn: false},
 	{Name: "graph/schema/moods.graphqls", Input: `type Moods {
-    id: ID!
+    id: Int!
     name: String!
     notes: String!
-    user_id: Int!
+    userId: Int!
 }
 
 input MoodsInput {
@@ -793,7 +793,7 @@ type Mutation {
   password: String!
   phone: String!
   address: [Address!]!
-  moods: [Moods]
+  moods: Moods
   habits: [Habits]
 }
 
@@ -804,7 +804,7 @@ input UserInput {
   email: String!
   phone: String!
   address: [AddressInput!]!
-  moods: [MoodsInput]
+  moods: MoodsInput
   habits: [HabitsInput]
 }
 
@@ -1471,7 +1471,7 @@ func (ec *executionContext) _HabitSettings_currentStreak(ctx context.Context, fi
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _HabitSettings_habit_id(ctx context.Context, field graphql.CollectedField, obj *HabitSettings) (ret graphql.Marshaler) {
+func (ec *executionContext) _HabitSettings_habitId(ctx context.Context, field graphql.CollectedField, obj *HabitSettings) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1576,7 +1576,7 @@ func (ec *executionContext) _Habits_name(ctx context.Context, field graphql.Coll
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Habits_user_id(ctx context.Context, field graphql.CollectedField, obj *Habits) (ret graphql.Marshaler) {
+func (ec *executionContext) _Habits_userId(ctx context.Context, field graphql.CollectedField, obj *Habits) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1778,9 +1778,9 @@ func (ec *executionContext) _Moods_id(ctx context.Context, field graphql.Collect
 		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(int)
 	fc.Result = res
-	return ec.marshalNID2string(ctx, field.Selections, res)
+	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Moods_name(ctx context.Context, field graphql.CollectedField, obj *Moods) (ret graphql.Marshaler) {
@@ -1853,7 +1853,7 @@ func (ec *executionContext) _Moods_notes(ctx context.Context, field graphql.Coll
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Moods_user_id(ctx context.Context, field graphql.CollectedField, obj *Moods) (ret graphql.Marshaler) {
+func (ec *executionContext) _Moods_userId(ctx context.Context, field graphql.CollectedField, obj *Moods) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -2971,9 +2971,9 @@ func (ec *executionContext) _User_moods(ctx context.Context, field graphql.Colle
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*Moods)
+	res := resTmp.(*Moods)
 	fc.Result = res
-	return ec.marshalOMoods2ᚕᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoods(ctx, field.Selections, res)
+	return ec.marshalOMoods2ᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoods(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _User_habits(ctx context.Context, field graphql.CollectedField, obj *User) (ret graphql.Marshaler) {
@@ -4472,7 +4472,7 @@ func (ec *executionContext) unmarshalInputUserInput(ctx context.Context, obj int
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("moods"))
-			it.Moods, err = ec.unmarshalOMoodsInput2ᚕᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoodsInput(ctx, v)
+			it.Moods, err = ec.unmarshalOMoodsInput2ᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoodsInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -4722,9 +4722,9 @@ func (ec *executionContext) _HabitSettings(ctx context.Context, sel ast.Selectio
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "habit_id":
+		case "habitId":
 			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._HabitSettings_habit_id(ctx, field, obj)
+				return ec._HabitSettings_habitId(ctx, field, obj)
 			}
 
 			out.Values[i] = innerFunc(ctx)
@@ -4773,9 +4773,9 @@ func (ec *executionContext) _Habits(ctx context.Context, sel ast.SelectionSet, o
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "user_id":
+		case "userId":
 			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Habits_user_id(ctx, field, obj)
+				return ec._Habits_userId(ctx, field, obj)
 			}
 
 			out.Values[i] = innerFunc(ctx)
@@ -4892,9 +4892,9 @@ func (ec *executionContext) _Moods(ctx context.Context, sel ast.SelectionSet, ob
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "user_id":
+		case "userId":
 			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Moods_user_id(ctx, field, obj)
+				return ec._Moods_userId(ctx, field, obj)
 			}
 
 			out.Values[i] = innerFunc(ctx)
@@ -6049,21 +6049,6 @@ func (ec *executionContext) unmarshalNHabitsInput2githubᚗcomᚋAntonioTrupac�
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNID2string(ctx context.Context, v interface{}) (string, error) {
-	res, err := graphql.UnmarshalID(v)
-	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalNID2string(ctx context.Context, sel ast.SelectionSet, v string) graphql.Marshaler {
-	res := graphql.MarshalID(v)
-	if res == graphql.Null {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "must not be null")
-		}
-	}
-	return res
-}
-
 func (ec *executionContext) marshalNImage2ᚕᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐImageᚄ(ctx context.Context, sel ast.SelectionSet, v []*Image) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
@@ -6729,72 +6714,11 @@ func (ec *executionContext) unmarshalOHabitsInput2ᚖgithubᚗcomᚋAntonioTrupa
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOMoods2ᚕᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoods(ctx context.Context, sel ast.SelectionSet, v []*Moods) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalOMoods2ᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoods(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	return ret
-}
-
 func (ec *executionContext) marshalOMoods2ᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoods(ctx context.Context, sel ast.SelectionSet, v *Moods) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._Moods(ctx, sel, v)
-}
-
-func (ec *executionContext) unmarshalOMoodsInput2ᚕᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoodsInput(ctx context.Context, v interface{}) ([]*MoodsInput, error) {
-	if v == nil {
-		return nil, nil
-	}
-	var vSlice []interface{}
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
-	var err error
-	res := make([]*MoodsInput, len(vSlice))
-	for i := range vSlice {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalOMoodsInput2ᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoodsInput(ctx, vSlice[i])
-		if err != nil {
-			return nil, err
-		}
-	}
-	return res, nil
 }
 
 func (ec *executionContext) unmarshalOMoodsInput2ᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoodsInput(ctx context.Context, v interface{}) (*MoodsInput, error) {
