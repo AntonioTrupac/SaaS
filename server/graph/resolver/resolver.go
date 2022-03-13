@@ -1,6 +1,7 @@
 package resolver
 
 import (
+	moodsService "github.com/AntonioTrupac/hannaWebshop/service/moods"
 	productsService "github.com/AntonioTrupac/hannaWebshop/service/products"
 	usersService "github.com/AntonioTrupac/hannaWebshop/service/users"
 )
@@ -12,11 +13,13 @@ import (
 type Resolver struct {
 	users    usersService.UserService
 	products productsService.ProductService
+	moods    moodsService.MoodsService
 }
 
-func NewResolver(users usersService.UserService, products productsService.ProductService) *Resolver {
+func NewResolver(users usersService.UserService, products productsService.ProductService, moods moodsService.MoodsService) *Resolver {
 	return &Resolver{
 		users:    users,
 		products: products,
+		moods:    moods,
 	}
 }

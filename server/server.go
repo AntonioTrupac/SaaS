@@ -9,6 +9,7 @@ import (
 
 	"github.com/AntonioTrupac/hannaWebshop/graph/resolver"
 	"github.com/AntonioTrupac/hannaWebshop/model"
+	moodService "github.com/AntonioTrupac/hannaWebshop/service/moods"
 	productService "github.com/AntonioTrupac/hannaWebshop/service/products"
 	userService "github.com/AntonioTrupac/hannaWebshop/service/users"
 	"github.com/joho/godotenv"
@@ -55,7 +56,8 @@ func main() {
 
 	productsService := productService.NewProducts(database)
 	usersService := userService.NewUsers(database)
-	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: resolver.NewResolver(usersService, productsService)}))
+	moodsService := moodService.NewMoods(database)
+	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: resolver.NewResolver(usersService, productsService, moodsService)}))
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)
