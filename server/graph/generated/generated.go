@@ -80,18 +80,23 @@ type ComplexityRoot struct {
 		URL       func(childComplexity int) int
 	}
 
+	MoodType struct {
+		ID   func(childComplexity int) int
+		Name func(childComplexity int) int
+	}
+
 	Moods struct {
 		ID     func(childComplexity int) int
-		Name   func(childComplexity int) int
 		Notes  func(childComplexity int) int
 		UserID func(childComplexity int) int
 	}
 
 	Mutation struct {
-		CreateHabits   func(childComplexity int, input HabitsInput) int
-		CreateMoods    func(childComplexity int, input MoodsInput) int
-		CreateProducts func(childComplexity int, input ProductInput) int
-		CreateUser     func(childComplexity int, input UserInput) int
+		CreateHabits    func(childComplexity int, input HabitsInput) int
+		CreateMoodTypes func(childComplexity int, input *MoodTypeInput) int
+		CreateMoods     func(childComplexity int, input MoodsInput) int
+		CreateProducts  func(childComplexity int, input ProductInput) int
+		CreateUser      func(childComplexity int, input UserInput) int
 	}
 
 	Product struct {
@@ -109,6 +114,7 @@ type ComplexityRoot struct {
 		GetHabits      func(childComplexity int) int
 		GetHabitsByID  func(childComplexity int, id int) int
 		GetMoodByID    func(childComplexity int, id int) int
+		GetMoodTypes   func(childComplexity int) int
 		GetMoods       func(childComplexity int) int
 		GetProductByID func(childComplexity int, id int) int
 		GetProducts    func(childComplexity int) int
@@ -133,6 +139,7 @@ type MutationResolver interface {
 	CreateProducts(ctx context.Context, input ProductInput) (*Product, error)
 	CreateHabits(ctx context.Context, input HabitsInput) (*Habits, error)
 	CreateMoods(ctx context.Context, input MoodsInput) (*Moods, error)
+	CreateMoodTypes(ctx context.Context, input *MoodTypeInput) (*MoodType, error)
 	CreateUser(ctx context.Context, input UserInput) (*User, error)
 }
 type QueryResolver interface {
@@ -142,6 +149,7 @@ type QueryResolver interface {
 	GetHabitsByID(ctx context.Context, id int) (*Habits, error)
 	GetMoods(ctx context.Context) ([]*Moods, error)
 	GetMoodByID(ctx context.Context, id int) (*Moods, error)
+	GetMoodTypes(ctx context.Context) ([]*MoodType, error)
 	Users(ctx context.Context) ([]*User, error)
 }
 
@@ -314,19 +322,26 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Image.URL(childComplexity), true
 
+	case "MoodType.id":
+		if e.complexity.MoodType.ID == nil {
+			break
+		}
+
+		return e.complexity.MoodType.ID(childComplexity), true
+
+	case "MoodType.name":
+		if e.complexity.MoodType.Name == nil {
+			break
+		}
+
+		return e.complexity.MoodType.Name(childComplexity), true
+
 	case "Moods.id":
 		if e.complexity.Moods.ID == nil {
 			break
 		}
 
 		return e.complexity.Moods.ID(childComplexity), true
-
-	case "Moods.name":
-		if e.complexity.Moods.Name == nil {
-			break
-		}
-
-		return e.complexity.Moods.Name(childComplexity), true
 
 	case "Moods.notes":
 		if e.complexity.Moods.Notes == nil {
@@ -353,6 +368,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.CreateHabits(childComplexity, args["input"].(HabitsInput)), true
+
+	case "Mutation.createMoodTypes":
+		if e.complexity.Mutation.CreateMoodTypes == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createMoodTypes_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateMoodTypes(childComplexity, args["input"].(*MoodTypeInput)), true
 
 	case "Mutation.createMoods":
 		if e.complexity.Mutation.CreateMoods == nil {
@@ -476,6 +503,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.GetMoodByID(childComplexity, args["id"].(int)), true
+
+	case "Query.getMoodTypes":
+		if e.complexity.Query.GetMoodTypes == nil {
+			break
+		}
+
+		return e.complexity.Query.GetMoodTypes(childComplexity), true
 
 	case "Query.getMoods":
 		if e.complexity.Query.GetMoods == nil {
@@ -699,23 +733,32 @@ extend type Mutation {
 }`, BuiltIn: false},
 	{Name: "graph/schema/moods.graphqls", Input: `type Moods {
     id: Int!
-    name: String!
     notes: String!
     userId: Int!
 }
 
 input MoodsInput {
-    name: String!
     notes: String!
+}
+
+type MoodType {
+    id: Int!
+    name: String!
+}
+
+input MoodTypeInput {
+    name: String!
 }
 
 extend type Query {
     getMoods: [Moods!]!
     getMoodById(id: Int!): Moods!
+    getMoodTypes: [MoodType!]!
 }
 
 extend type Mutation {
     createMoods(input: MoodsInput!): Moods
+    createMoodTypes(input: MoodTypeInput) : MoodType
 }`, BuiltIn: false},
 	{Name: "graph/schema/schema.graphqls", Input: `schema {
   query: Query
@@ -793,7 +836,7 @@ type Mutation {
   password: String!
   phone: String!
   address: [Address!]!
-  moods: Moods
+  moods: [Moods]
   habits: [Habits]
 }
 
@@ -804,7 +847,7 @@ input UserInput {
   email: String!
   phone: String!
   address: [AddressInput!]!
-  moods: MoodsInput
+  moods: [MoodsInput]
   habits: [HabitsInput]
 }
 
@@ -830,6 +873,21 @@ func (ec *executionContext) field_Mutation_createHabits_args(ctx context.Context
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 		arg0, err = ec.unmarshalNHabitsInput2githubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐHabitsInput(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_createMoodTypes_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 *MoodTypeInput
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalOMoodTypeInput2ᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoodTypeInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -1748,6 +1806,76 @@ func (ec *executionContext) _Image_productId(ctx context.Context, field graphql.
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _MoodType_id(ctx context.Context, field graphql.CollectedField, obj *MoodType) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "MoodType",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _MoodType_name(ctx context.Context, field graphql.CollectedField, obj *MoodType) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "MoodType",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Name, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Moods_id(ctx context.Context, field graphql.CollectedField, obj *Moods) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -1781,41 +1909,6 @@ func (ec *executionContext) _Moods_id(ctx context.Context, field graphql.Collect
 	res := resTmp.(int)
 	fc.Result = res
 	return ec.marshalNInt2int(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _Moods_name(ctx context.Context, field graphql.CollectedField, obj *Moods) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:     "Moods",
-		Field:      field,
-		Args:       nil,
-		IsMethod:   false,
-		IsResolver: false,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Name, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Moods_notes(ctx context.Context, field graphql.CollectedField, obj *Moods) (ret graphql.Marshaler) {
@@ -2009,6 +2102,45 @@ func (ec *executionContext) _Mutation_createMoods(ctx context.Context, field gra
 	res := resTmp.(*Moods)
 	fc.Result = res
 	return ec.marshalOMoods2ᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoods(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_createMoodTypes(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_createMoodTypes_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreateMoodTypes(rctx, args["input"].(*MoodTypeInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*MoodType)
+	fc.Result = res
+	return ec.marshalOMoodType2ᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoodType(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_createUser(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2558,6 +2690,41 @@ func (ec *executionContext) _Query_getMoodById(ctx context.Context, field graphq
 	return ec.marshalNMoods2ᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoods(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Query_getMoodTypes(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().GetMoodTypes(rctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*MoodType)
+	fc.Result = res
+	return ec.marshalNMoodType2ᚕᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoodTypeᚄ(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Query_users(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -2971,9 +3138,9 @@ func (ec *executionContext) _User_moods(ctx context.Context, field graphql.Colle
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*Moods)
+	res := resTmp.([]*Moods)
 	fc.Result = res
-	return ec.marshalOMoods2ᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoods(ctx, field.Selections, res)
+	return ec.marshalOMoods2ᚕᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoods(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _User_habits(ctx context.Context, field graphql.CollectedField, obj *User) (ret graphql.Marshaler) {
@@ -4309,8 +4476,8 @@ func (ec *executionContext) unmarshalInputImageInput(ctx context.Context, obj in
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputMoodsInput(ctx context.Context, obj interface{}) (MoodsInput, error) {
-	var it MoodsInput
+func (ec *executionContext) unmarshalInputMoodTypeInput(ctx context.Context, obj interface{}) (MoodTypeInput, error) {
+	var it MoodTypeInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -4326,6 +4493,21 @@ func (ec *executionContext) unmarshalInputMoodsInput(ctx context.Context, obj in
 			if err != nil {
 				return it, err
 			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputMoodsInput(ctx context.Context, obj interface{}) (MoodsInput, error) {
+	var it MoodsInput
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	for k, v := range asMap {
+		switch k {
 		case "notes":
 			var err error
 
@@ -4472,7 +4654,7 @@ func (ec *executionContext) unmarshalInputUserInput(ctx context.Context, obj int
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("moods"))
-			it.Moods, err = ec.unmarshalOMoodsInput2ᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoodsInput(ctx, v)
+			it.Moods, err = ec.unmarshalOMoodsInput2ᚕᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoodsInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -4852,6 +5034,47 @@ func (ec *executionContext) _Image(ctx context.Context, sel ast.SelectionSet, ob
 	return out
 }
 
+var moodTypeImplementors = []string{"MoodType"}
+
+func (ec *executionContext) _MoodType(ctx context.Context, sel ast.SelectionSet, obj *MoodType) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, moodTypeImplementors)
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("MoodType")
+		case "id":
+			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._MoodType_id(ctx, field, obj)
+			}
+
+			out.Values[i] = innerFunc(ctx)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "name":
+			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._MoodType_name(ctx, field, obj)
+			}
+
+			out.Values[i] = innerFunc(ctx)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
 var moodsImplementors = []string{"Moods"}
 
 func (ec *executionContext) _Moods(ctx context.Context, sel ast.SelectionSet, obj *Moods) graphql.Marshaler {
@@ -4865,16 +5088,6 @@ func (ec *executionContext) _Moods(ctx context.Context, sel ast.SelectionSet, ob
 		case "id":
 			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Moods_id(ctx, field, obj)
-			}
-
-			out.Values[i] = innerFunc(ctx)
-
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
-		case "name":
-			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Moods_name(ctx, field, obj)
 			}
 
 			out.Values[i] = innerFunc(ctx)
@@ -4955,6 +5168,13 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 		case "createMoods":
 			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_createMoods(ctx, field)
+			}
+
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, innerFunc)
+
+		case "createMoodTypes":
+			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_createMoodTypes(ctx, field)
 			}
 
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, innerFunc)
@@ -5219,6 +5439,29 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_getMoodById(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx, innerFunc)
+			}
+
+			out.Concurrently(i, func() graphql.Marshaler {
+				return rrm(innerCtx)
+			})
+		case "getMoodTypes":
+			field := field
+
+			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_getMoodTypes(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&invalids, 1)
 				}
@@ -6140,6 +6383,60 @@ func (ec *executionContext) marshalNInt2int(ctx context.Context, sel ast.Selecti
 	return res
 }
 
+func (ec *executionContext) marshalNMoodType2ᚕᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoodTypeᚄ(ctx context.Context, sel ast.SelectionSet, v []*MoodType) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNMoodType2ᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoodType(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
+func (ec *executionContext) marshalNMoodType2ᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoodType(ctx context.Context, sel ast.SelectionSet, v *MoodType) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._MoodType(ctx, sel, v)
+}
+
 func (ec *executionContext) marshalNMoods2githubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoods(ctx context.Context, sel ast.SelectionSet, v Moods) graphql.Marshaler {
 	return ec._Moods(ctx, sel, &v)
 }
@@ -6714,11 +7011,87 @@ func (ec *executionContext) unmarshalOHabitsInput2ᚖgithubᚗcomᚋAntonioTrupa
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
+func (ec *executionContext) marshalOMoodType2ᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoodType(ctx context.Context, sel ast.SelectionSet, v *MoodType) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._MoodType(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalOMoodTypeInput2ᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoodTypeInput(ctx context.Context, v interface{}) (*MoodTypeInput, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputMoodTypeInput(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalOMoods2ᚕᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoods(ctx context.Context, sel ast.SelectionSet, v []*Moods) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalOMoods2ᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoods(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	return ret
+}
+
 func (ec *executionContext) marshalOMoods2ᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoods(ctx context.Context, sel ast.SelectionSet, v *Moods) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._Moods(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalOMoodsInput2ᚕᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoodsInput(ctx context.Context, v interface{}) ([]*MoodsInput, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]*MoodsInput, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalOMoodsInput2ᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoodsInput(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
 }
 
 func (ec *executionContext) unmarshalOMoodsInput2ᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐMoodsInput(ctx context.Context, v interface{}) (*MoodsInput, error) {

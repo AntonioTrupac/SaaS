@@ -19,26 +19,18 @@ func ModelUser(ctx context.Context, in generated.UserInput) *model.User {
 		Age:       uint(in.Age),
 		Phone:     in.Phone,
 		Address:   mapAddressesToUser(in.Address),
-		Mood:      mapMoodToUser(in.Moods),
-	}
-}
-
-func mapMoodToUser(moodInput *generated.MoodsInput) *model.Mood {
-	return &model.Mood{
-		Name:  moodInput.Name,
-		Notes: moodInput.Notes,
 	}
 }
 
 func mapAddressesToUser(addressInput []*generated.AddressInput) []*model.Address {
 	var addresses []*model.Address
 
-	for _, addressInput := range addressInput {
+	for _, input := range addressInput {
 		addresses = append(addresses, &model.Address{
-			AddressLine: addressInput.AddressLine,
-			City:        addressInput.City,
-			Country:     addressInput.Country,
-			PostalCode:  addressInput.PostalCode,
+			AddressLine: input.AddressLine,
+			City:        input.City,
+			Country:     input.Country,
+			PostalCode:  input.PostalCode,
 		})
 	}
 
@@ -54,16 +46,6 @@ func UserPayload(user *model.User) *generated.User {
 		Age:       int(user.Age),
 		Phone:     user.Phone,
 		Address:   mapAddressPayloadToUser(user.Address),
-		Moods:     mapMoodPayloadToUser(user.Mood),
-	}
-}
-
-func mapMoodPayloadToUser(userPayload *model.Mood) *generated.Moods {
-	return &generated.Moods{
-		ID:     int(userPayload.ID),
-		Name:   userPayload.Name,
-		Notes:  userPayload.Notes,
-		UserID: userPayload.UserId,
 	}
 }
 
@@ -92,6 +74,9 @@ func Users(users []*model.User) []*generated.User {
 			LastName:  u.LastName,
 			Age:       int(u.Age),
 			ID:        int(u.ID),
+			Email:     u.Email,
+			Phone:     u.Phone,
+			Moods:     MoodsPayload(u.Mood),
 		})
 	}
 

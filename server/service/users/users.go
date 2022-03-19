@@ -47,13 +47,6 @@ func (u *users) CreateAUser(input *model.User) error {
 			return err
 		}
 
-		valueUser := input.Mood
-		valueUser.UserId = int(input.ID)
-
-		if err := tx.CreateInBatches(input.Mood, 100).Error; err != nil {
-			return err
-		}
-
 		return nil
 	})
 }

@@ -75,15 +75,22 @@ type ImageInput struct {
 	URL string `json:"url"`
 }
 
+type MoodType struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+}
+
+type MoodTypeInput struct {
+	Name string `json:"name"`
+}
+
 type Moods struct {
 	ID     int    `json:"id"`
-	Name   string `json:"name"`
 	Notes  string `json:"notes"`
 	UserID int    `json:"userId"`
 }
 
 type MoodsInput struct {
-	Name  string `json:"name"`
 	Notes string `json:"notes"`
 }
 
@@ -117,7 +124,7 @@ type User struct {
 	Password  string     `json:"password"`
 	Phone     string     `json:"phone"`
 	Address   []*Address `json:"address"`
-	Moods     *Moods     `json:"moods"`
+	Moods     []*Moods   `json:"moods"`
 	Habits    []*Habits  `json:"habits"`
 }
 
@@ -131,6 +138,6 @@ type UserInput struct {
 	Email     string          `json:"email"`
 	Phone     string          `json:"phone"`
 	Address   []*AddressInput `json:"address"`
-	Moods     *MoodsInput     `json:"moods"`
+	Moods     []*MoodsInput   `json:"moods"`
 	Habits    []*HabitsInput  `json:"habits"`
 }

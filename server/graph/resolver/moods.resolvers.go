@@ -5,9 +5,8 @@ package resolver
 
 import (
 	"context"
-	"github.com/AntonioTrupac/hannaWebshop/graph/types"
-
 	"github.com/AntonioTrupac/hannaWebshop/graph/generated"
+	"github.com/AntonioTrupac/hannaWebshop/graph/types"
 )
 
 func (r *mutationResolver) CreateMoods(ctx context.Context, input generated.MoodsInput) (*generated.Moods, error) {
@@ -22,8 +21,20 @@ func (r *mutationResolver) CreateMoods(ctx context.Context, input generated.Mood
 	return types.GetPayloadFromDB(mood), nil
 }
 
+func (r *mutationResolver) CreateMoodTypes(ctx context.Context, input *generated.MoodTypeInput) (*generated.MoodType, error) {
+	moodType := types.MapFromGeneratedTypeInput(input)
+
+	err := r.moods.CreateMoodTypes(moodType)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return types.MoodTypePayload(moodType), nil
+}
+
 func (r *queryResolver) GetMoods(ctx context.Context) ([]*generated.Moods, error) {
-	moods, err := r.moods.GetMoodsService()
+	moods, err := r.moods.GetAllMoods()
 
 	if err != nil {
 		return nil, err
@@ -40,4 +51,14 @@ func (r *queryResolver) GetMoodByID(ctx context.Context, id int) (*generated.Moo
 	}
 
 	return types.MoodByIdPayload(mood), nil
+}
+
+func (r *queryResolver) GetMoodTypes(ctx context.Context) ([]*generated.MoodType, error) {
+	moods, err := r.moods.GetAllMoodTypes()
+
+	if err != nil {
+		return nil, err
+	}
+
+	return types.GetMoodTypesPayload(moods), nil
 }

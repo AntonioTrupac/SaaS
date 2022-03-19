@@ -10,5 +10,5 @@ type User struct {
 	Age       uint
 	Phone     string `gorm:"size:50;not null"`
 	Address   []*Address
-	Mood      *Mood
+	Mood      []*Mood
 }

@@ -6,16 +6,18 @@ import (
 )
 
 type MoodsService interface {
-	GetMoodsService() ([]*model.Mood, error)
+	GetAllMoods() ([]*model.Mood, error)
 	GetMoodByIdService(id int) (*model.Mood, error)
 	CreateAMood(input *model.Mood) error
+	CreateMoodTypes(input *model.MoodType) error
+	GetAllMoodTypes() ([]*model.MoodType, error)
 }
 
 type Moods struct {
 	DB *gorm.DB
 }
 
-func (m Moods) GetMoodsService() ([]*model.Mood, error) {
+func (m Moods) GetAllMoods() ([]*model.Mood, error) {
 	var moods []*model.Mood
 
 	if err := m.DB.Find(&moods).Error; err != nil {
@@ -43,6 +45,24 @@ func (m Moods) CreateAMood(input *model.Mood) error {
 
 		return nil
 	})
+}
+
+func (m Moods) CreateMoodTypes(input *model.MoodType) error {
+	if err := m.DB.Create(input).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m Moods) GetAllMoodTypes() ([]*model.MoodType, error) {
+	var moodTypes []*model.MoodType
+
+	if err := m.DB.Find(&moodTypes).Error; err != nil {
+		return nil, err
+	}
+
+	return moodTypes, nil
 }
 
 func NewMoods(db *gorm.DB) MoodsService {
