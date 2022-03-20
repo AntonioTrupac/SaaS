@@ -85,9 +85,10 @@ type MoodTypeInput struct {
 }
 
 type Moods struct {
-	ID     int    `json:"id"`
-	Notes  string `json:"notes"`
-	UserID int    `json:"userId"`
+	ID         int    `json:"id"`
+	Notes      string `json:"notes"`
+	MoodTypeID int    `json:"moodTypeId"`
+	UserID     int    `json:"userId"`
 }
 
 type MoodsInput struct {

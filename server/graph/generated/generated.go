@@ -86,15 +86,16 @@ type ComplexityRoot struct {
 	}
 
 	Moods struct {
-		ID     func(childComplexity int) int
-		Notes  func(childComplexity int) int
-		UserID func(childComplexity int) int
+		ID         func(childComplexity int) int
+		MoodTypeID func(childComplexity int) int
+		Notes      func(childComplexity int) int
+		UserID     func(childComplexity int) int
 	}
 
 	Mutation struct {
 		CreateHabits    func(childComplexity int, input HabitsInput) int
 		CreateMoodTypes func(childComplexity int, input *MoodTypeInput) int
-		CreateMoods     func(childComplexity int, input MoodsInput) int
+		CreateMoods     func(childComplexity int, input MoodsInput, typeID int) int
 		CreateProducts  func(childComplexity int, input ProductInput) int
 		CreateUser      func(childComplexity int, input UserInput) int
 	}
@@ -138,7 +139,7 @@ type ComplexityRoot struct {
 type MutationResolver interface {
 	CreateProducts(ctx context.Context, input ProductInput) (*Product, error)
 	CreateHabits(ctx context.Context, input HabitsInput) (*Habits, error)
-	CreateMoods(ctx context.Context, input MoodsInput) (*Moods, error)
+	CreateMoods(ctx context.Context, input MoodsInput, typeID int) (*Moods, error)
 	CreateMoodTypes(ctx context.Context, input *MoodTypeInput) (*MoodType, error)
 	CreateUser(ctx context.Context, input UserInput) (*User, error)
 }
@@ -343,6 +344,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Moods.ID(childComplexity), true
 
+	case "Moods.moodTypeId":
+		if e.complexity.Moods.MoodTypeID == nil {
+			break
+		}
+
+		return e.complexity.Moods.MoodTypeID(childComplexity), true
+
 	case "Moods.notes":
 		if e.complexity.Moods.Notes == nil {
 			break
@@ -391,7 +399,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateMoods(childComplexity, args["input"].(MoodsInput)), true
+		return e.complexity.Mutation.CreateMoods(childComplexity, args["input"].(MoodsInput), args["typeId"].(int)), true
 
 	case "Mutation.createProducts":
 		if e.complexity.Mutation.CreateProducts == nil {
@@ -734,6 +742,7 @@ extend type Mutation {
 	{Name: "graph/schema/moods.graphqls", Input: `type Moods {
     id: Int!
     notes: String!
+    moodTypeId: Int!
     userId: Int!
 }
 
@@ -757,7 +766,7 @@ extend type Query {
 }
 
 extend type Mutation {
-    createMoods(input: MoodsInput!): Moods
+    createMoods(input: MoodsInput!, typeId: Int!): Moods
     createMoodTypes(input: MoodTypeInput) : MoodType
 }`, BuiltIn: false},
 	{Name: "graph/schema/schema.graphqls", Input: `schema {
@@ -908,6 +917,15 @@ func (ec *executionContext) field_Mutation_createMoods_args(ctx context.Context,
 		}
 	}
 	args["input"] = arg0
+	var arg1 int
+	if tmp, ok := rawArgs["typeId"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("typeId"))
+		arg1, err = ec.unmarshalNInt2int(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["typeId"] = arg1
 	return args, nil
 }
 
@@ -1946,6 +1964,41 @@ func (ec *executionContext) _Moods_notes(ctx context.Context, field graphql.Coll
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Moods_moodTypeId(ctx context.Context, field graphql.CollectedField, obj *Moods) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Moods",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MoodTypeID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Moods_userId(ctx context.Context, field graphql.CollectedField, obj *Moods) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -2090,7 +2143,7 @@ func (ec *executionContext) _Mutation_createMoods(ctx context.Context, field gra
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateMoods(rctx, args["input"].(MoodsInput))
+		return ec.resolvers.Mutation().CreateMoods(rctx, args["input"].(MoodsInput), args["typeId"].(int))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -5098,6 +5151,16 @@ func (ec *executionContext) _Moods(ctx context.Context, sel ast.SelectionSet, ob
 		case "notes":
 			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Moods_notes(ctx, field, obj)
+			}
+
+			out.Values[i] = innerFunc(ctx)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "moodTypeId":
+			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Moods_moodTypeId(ctx, field, obj)
 			}
 
 			out.Values[i] = innerFunc(ctx)

@@ -1,6 +1,7 @@
 type Moods {
     id: Int!
     notes: String!
+    moodTypeId: Int!
     userId: Int!
 }
 
@@ -24,6 +25,6 @@ extend type Query {
 }
 
 extend type Mutation {
-    createMoods(input: MoodsInput!): Moods
+    createMoods(input: MoodsInput!, typeId: Int!): Moods
     createMoodTypes(input: MoodTypeInput) : MoodType
 }

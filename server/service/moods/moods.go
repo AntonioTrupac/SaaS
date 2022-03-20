@@ -8,7 +8,7 @@ import (
 type MoodsService interface {
 	GetAllMoods() ([]*model.Mood, error)
 	GetMoodByIdService(id int) (*model.Mood, error)
-	CreateAMood(input *model.Mood) error
+	CreateAMood(input *model.Mood, id int) error
 	CreateMoodTypes(input *model.MoodType) error
 	GetAllMoodTypes() ([]*model.MoodType, error)
 }
@@ -37,8 +37,13 @@ func (m Moods) GetMoodByIdService(id int) (*model.Mood, error) {
 	return mood, nil
 }
 
-func (m Moods) CreateAMood(input *model.Mood) error {
+// TODO: check how to create a mood when u add authorization and authentication IE. when user logs in
+
+func (m Moods) CreateAMood(input *model.Mood, typeId int) error {
 	return m.DB.Transaction(func(tx *gorm.DB) error {
+
+		input.MoodTypeId = typeId
+
 		if err := tx.Create(input).Error; err != nil {
 			return err
 		}

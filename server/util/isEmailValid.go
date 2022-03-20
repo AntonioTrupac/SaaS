@@ -18,9 +18,9 @@ func IsEmailValid(email string) bool {
 	}
 
 	parts := strings.Split(email, "@")
-	mx, error := net.LookupMX(parts[1])
+	mx, err := net.LookupMX(parts[1])
 
-	if error != nil || len(mx) == 0 {
+	if err != nil || len(mx) == 0 {
 		fmt.Println("Domain is not valid!")
 		return false
 	}

@@ -5,14 +5,15 @@ package resolver
 
 import (
 	"context"
+
 	"github.com/AntonioTrupac/hannaWebshop/graph/generated"
 	"github.com/AntonioTrupac/hannaWebshop/graph/types"
 )
 
-func (r *mutationResolver) CreateMoods(ctx context.Context, input generated.MoodsInput) (*generated.Moods, error) {
+func (r *mutationResolver) CreateMoods(ctx context.Context, input generated.MoodsInput, typeID int) (*generated.Moods, error) {
 	mood := types.MapFromGeneratedInput(input)
 
-	err := r.moods.CreateAMood(mood)
+	err := r.moods.CreateAMood(mood, typeID)
 
 	if err != nil {
 		return nil, err
