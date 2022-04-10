@@ -26,6 +26,22 @@ type AddressInput struct {
 	Country     string `json:"country"`
 }
 
+type AuthOps struct {
+	Login    interface{} `json:"login"`
+	Register interface{} `json:"register"`
+}
+
+type AuthUser struct {
+	ID        int        `json:"id"`
+	FirstName string     `json:"firstName"`
+	LastName  string     `json:"lastName"`
+	Age       int        `json:"age"`
+	Email     string     `json:"email"`
+	Password  string     `json:"password"`
+	Phone     string     `json:"phone"`
+	Address   []*Address `json:"address"`
+}
+
 type Category struct {
 	ID   int    `json:"id"`
 	Name string `json:"name"`
@@ -93,6 +109,16 @@ type Moods struct {
 
 type MoodsInput struct {
 	Notes string `json:"notes"`
+}
+
+type NewAuthUser struct {
+	FirstName string          `json:"firstName"`
+	LastName  string          `json:"lastName"`
+	Age       int             `json:"age"`
+	Email     string          `json:"email"`
+	Password  string          `json:"password"`
+	Phone     string          `json:"phone"`
+	Address   []*AddressInput `json:"address"`
 }
 
 type Product struct {

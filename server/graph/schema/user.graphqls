@@ -22,10 +22,38 @@ input UserInput {
   habits: [HabitsInput]
 }
 
+type AuthUser {
+  id: Int!
+  firstName: String!
+  lastName: String!
+  age: Int!
+  email: String!
+  password: String!
+  phone: String!
+  address: [Address!]!
+}
+
+input NewAuthUser {
+  firstName: String!
+  lastName: String!
+  age: Int!
+  email: String!
+  password: String!
+  phone: String!
+  address: [AddressInput!]!
+}
+
+type AuthOps {
+  login(email: String!, password: String!): Any! @goField(forceResolver: true)
+  register(input: NewAuthUser!): Any! @goField(forceResolver: true)
+}
+
 extend type Query {
   users: [User!]!
+  getUser(id: Int!): Any! @goField(forceResolver: true)
 }
 
 extend type Mutation {
   createUser(input: UserInput!): User!
+  auth: AuthOps! @goField(forceResolver: true)
 }
