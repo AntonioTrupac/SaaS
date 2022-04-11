@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"io"
 	"log"
 	"os"
 	"time"
@@ -9,8 +10,10 @@ import (
 )
 
 func LogGORM() dbLog.Interface {
+	f, _ := os.Create("gorm.log")
+
 	newLogger := dbLog.New(
-		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
+		log.New(io.MultiWriter(f), "\r\n", log.LstdFlags), // io writer
 		dbLog.Config{
 			SlowThreshold:             time.Second, // Slow SQL threshold
 			LogLevel:                  dbLog.Info,  // Log level
@@ -18,5 +21,6 @@ func LogGORM() dbLog.Interface {
 			Colorful:                  true,
 		},
 	)
+
 	return newLogger
 }
