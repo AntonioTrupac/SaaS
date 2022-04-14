@@ -12,7 +12,7 @@ import (
 )
 
 func (r *authOpsResolver) Login(ctx context.Context, obj *generated.AuthOps, email string, password string) (interface{}, error) {
-	panic(fmt.Errorf("not implemented"))
+	return r.auth.UserLogin(ctx, email, password)
 }
 
 func (r *authOpsResolver) Register(ctx context.Context, obj *generated.AuthOps, input generated.NewAuthUser) (interface{}, error) {
@@ -32,7 +32,7 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input generated.UserI
 }
 
 func (r *mutationResolver) Auth(ctx context.Context) (*generated.AuthOps, error) {
-	panic(fmt.Errorf("not implemented"))
+	return &generated.AuthOps{}, nil
 }
 
 func (r *queryResolver) Users(ctx context.Context) ([]*generated.User, error) {
