@@ -22,7 +22,7 @@ input UserInput {
   habits: [HabitsInput]
 }
 
-type AuthUser {
+type AuthUser implements Actor {
   id: Int!
   firstName: String!
   lastName: String!

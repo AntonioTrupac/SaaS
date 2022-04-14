@@ -16,7 +16,7 @@ func (r *authOpsResolver) Login(ctx context.Context, obj *generated.AuthOps, ema
 }
 
 func (r *authOpsResolver) Register(ctx context.Context, obj *generated.AuthOps, input generated.NewAuthUser) (interface{}, error) {
-	panic(fmt.Errorf("not implemented"))
+	return r.auth.UserRegister(ctx, types.ModelUserAuth(ctx, input))
 }
 
 func (r *mutationResolver) CreateUser(ctx context.Context, input generated.UserInput) (*generated.User, error) {

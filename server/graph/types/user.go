@@ -2,6 +2,7 @@ package types
 
 import (
 	"context"
+
 	"github.com/AntonioTrupac/hannaWebshop/graph/generated"
 	"github.com/AntonioTrupac/hannaWebshop/model"
 	"github.com/AntonioTrupac/hannaWebshop/util"
@@ -81,4 +82,18 @@ func Users(users []*model.User) []*generated.User {
 	}
 
 	return out
+}
+
+// Register mutation type
+func ModelUserAuth(ctx context.Context, in generated.NewAuthUser) *model.UserAuth {
+	util.IsEmailValid(in.Email)
+
+	return &model.UserAuth{
+		Email:     in.Email,
+		FirstName: in.FirstName,
+		LastName:  in.LastName,
+		Age:       uint(in.Age),
+		Phone:     in.Phone,
+		Address:   mapAddressesToUser(in.Address),
+	}
 }

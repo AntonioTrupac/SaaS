@@ -9,6 +9,7 @@ import (
 
 	"github.com/AntonioTrupac/hannaWebshop/graph/resolver"
 	"github.com/AntonioTrupac/hannaWebshop/model"
+	authService "github.com/AntonioTrupac/hannaWebshop/service/auth"
 	moodService "github.com/AntonioTrupac/hannaWebshop/service/moods"
 	productService "github.com/AntonioTrupac/hannaWebshop/service/products"
 	userService "github.com/AntonioTrupac/hannaWebshop/service/users"
@@ -57,7 +58,8 @@ func main() {
 	productsService := productService.NewProducts(database)
 	usersService := userService.NewUsers(database)
 	moodsService := moodService.NewMoods(database)
-	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: resolver.NewResolver(usersService, productsService, moodsService)}))
+	authService := authService.NewAuth(database, usersService)
+	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: resolver.NewResolver(usersService, productsService, moodsService, authService)}))
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)
@@ -101,7 +103,7 @@ func initDB() {
 }
 
 func migrate(db *gorm.DB) error {
-	err := db.Debug().AutoMigrate(&model.User{}, &model.Address{}, &model.Product{}, &model.Image{}, &model.Category{}, &model.Mood{}, &model.MoodType{})
+	err := db.Debug().AutoMigrate(&model.User{}, &model.Address{}, &model.Product{}, &model.Image{}, &model.Category{}, &model.Mood{}, &model.MoodType{}, &model.UserAuth{})
 	if err != nil {
 		return err
 	}
