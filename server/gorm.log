@@ -1,195 +1,216 @@
 
-2022/04/14 18:28:30 [35m/home/antonio/SaaS/server/server.go:106
-[0m[31m[error] [0mfailed to parse value &model.UserAuth{Model:gorm.Model{ID:0x0, CreatedAt:time.Date(1, time.January, 1, 0, 0, 0, 0, time.UTC), UpdatedAt:time.Date(1, time.January, 1, 0, 0, 0, 0, time.UTC), DeletedAt:gorm.DeletedAt{Time:time.Date(1, time.January, 1, 0, 0, 0, 0, time.UTC), Valid:false}}, FirstName:"", LastName:"", Email:"", Password:"", Age:0x0, Phone:"", Address:[]*model.Address(nil)}, got error invalid field found for struct github.com/AntonioTrupac/hannaWebshop/model.UserAuth's field Address: define a valid foreign key for relations or implement the Valuer/Scanner interface
+2022/04/14 19:07:09 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
+[0m[33m[70.390ms] [34;1m[rows:-][0m SELECT DATABASE()
 
-2022/04/14 18:28:30 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
-[0m[33m[73.999ms] [34;1m[rows:-][0m SELECT DATABASE()
+2022/04/14 19:07:09 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
+[0m[33m[145.951ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
 
-2022/04/14 18:28:31 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
-[0m[33m[152.713ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
+2022/04/14 19:07:09 [32m/home/antonio/SaaS/server/server.go:106
+[0m[33m[152.755ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'sass' AND table_name = 'users' AND table_type = 'BASE TABLE'
 
-2022/04/14 18:28:31 [32m/home/antonio/SaaS/server/server.go:106
-[0m[33m[153.041ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'sass' AND table_name = 'users' AND table_type = 'BASE TABLE'
+2022/04/14 19:07:09 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
+[0m[33m[71.935ms] [34;1m[rows:-][0m SELECT DATABASE()
 
-2022/04/14 18:28:31 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
-[0m[33m[74.773ms] [34;1m[rows:-][0m SELECT DATABASE()
+2022/04/14 19:07:09 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
+[0m[33m[144.857ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
 
-2022/04/14 18:28:31 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
-[0m[33m[150.820ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
+2022/04/14 19:07:10 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:205
+[0m[33m[150.921ms] [34;1m[rows:-][0m SELECT column_name, is_nullable, data_type, character_maximum_length, numeric_precision, numeric_scale , datetime_precision FROM information_schema.columns WHERE table_schema = 'sass' AND table_name = 'users' ORDER BY ORDINAL_POSITION
 
-2022/04/14 18:28:31 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:205
-[0m[33m[154.941ms] [34;1m[rows:-][0m SELECT column_name, is_nullable, data_type, character_maximum_length, numeric_precision, numeric_scale , datetime_precision FROM information_schema.columns WHERE table_schema = 'sass' AND table_name = 'users' ORDER BY ORDINAL_POSITION
+2022/04/14 19:07:10 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
+[0m[33m[72.756ms] [34;1m[rows:-][0m SELECT DATABASE()
 
-2022/04/14 18:28:31 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
-[0m[33m[74.811ms] [34;1m[rows:-][0m SELECT DATABASE()
+2022/04/14 19:07:10 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
+[0m[33m[142.072ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
 
-2022/04/14 18:28:31 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
-[0m[33m[149.966ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
+2022/04/14 19:07:10 [32m/home/antonio/SaaS/server/server.go:106
+[0m[33m[148.880ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'sass' AND table_name = 'users' AND index_name = 'idx_users_deleted_at'
 
-2022/04/14 18:28:32 [32m/home/antonio/SaaS/server/server.go:106
-[0m[33m[153.924ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'sass' AND table_name = 'users' AND index_name = 'idx_users_deleted_at'
+2022/04/14 19:07:10 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
+[0m[33m[70.969ms] [34;1m[rows:-][0m SELECT DATABASE()
 
-2022/04/14 18:28:32 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
-[0m[33m[73.908ms] [34;1m[rows:-][0m SELECT DATABASE()
+2022/04/14 19:07:10 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
+[0m[33m[143.892ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
 
-2022/04/14 18:28:32 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
-[0m[33m[151.972ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
+2022/04/14 19:07:10 [32m/home/antonio/SaaS/server/server.go:106
+[0m[33m[154.999ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'sass' AND table_name = 'addresses' AND table_type = 'BASE TABLE'
 
-2022/04/14 18:28:32 [32m/home/antonio/SaaS/server/server.go:106
-[0m[33m[152.943ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'sass' AND table_name = 'addresses' AND table_type = 'BASE TABLE'
+2022/04/14 19:07:10 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
+[0m[33m[71.921ms] [34;1m[rows:-][0m SELECT DATABASE()
 
-2022/04/14 18:28:32 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
-[0m[33m[76.883ms] [34;1m[rows:-][0m SELECT DATABASE()
+2022/04/14 19:07:11 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
+[0m[33m[144.921ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
 
-2022/04/14 18:28:32 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
-[0m[33m[148.916ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
+2022/04/14 19:07:11 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:205
+[0m[33m[144.973ms] [34;1m[rows:-][0m SELECT column_name, is_nullable, data_type, character_maximum_length, numeric_precision, numeric_scale , datetime_precision FROM information_schema.columns WHERE table_schema = 'sass' AND table_name = 'addresses' ORDER BY ORDINAL_POSITION
 
-2022/04/14 18:28:32 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:205
-[0m[33m[154.941ms] [34;1m[rows:-][0m SELECT column_name, is_nullable, data_type, character_maximum_length, numeric_precision, numeric_scale , datetime_precision FROM information_schema.columns WHERE table_schema = 'sass' AND table_name = 'addresses' ORDER BY ORDINAL_POSITION
+2022/04/14 19:07:11 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
+[0m[33m[71.780ms] [34;1m[rows:-][0m SELECT DATABASE()
 
-2022/04/14 18:28:32 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
-[0m[33m[73.856ms] [34;1m[rows:-][0m SELECT DATABASE()
+2022/04/14 19:07:11 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
+[0m[33m[144.031ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
 
-2022/04/14 18:28:33 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
-[0m[33m[152.943ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
+2022/04/14 19:07:11 [32m/home/antonio/SaaS/server/server.go:106
+[0m[33m[146.875ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'sass' AND table_name = 'addresses' AND index_name = 'idx_addresses_deleted_at'
 
-2022/04/14 18:28:33 [32m/home/antonio/SaaS/server/server.go:106
-[0m[33m[152.923ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'sass' AND table_name = 'addresses' AND index_name = 'idx_addresses_deleted_at'
+2022/04/14 19:07:11 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
+[0m[33m[71.915ms] [34;1m[rows:-][0m SELECT DATABASE()
 
-2022/04/14 18:28:33 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
-[0m[33m[76.905ms] [34;1m[rows:-][0m SELECT DATABASE()
+2022/04/14 19:07:11 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
+[0m[33m[143.988ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
 
-2022/04/14 18:28:33 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
-[0m[33m[149.962ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
+2022/04/14 19:07:11 [32m/home/antonio/SaaS/server/server.go:106
+[0m[33m[145.919ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'sass' AND table_name = 'products' AND table_type = 'BASE TABLE'
 
-2022/04/14 18:28:33 [32m/home/antonio/SaaS/server/server.go:106
-[0m[33m[152.927ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'sass' AND table_name = 'products' AND table_type = 'BASE TABLE'
+2022/04/14 19:07:11 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
+[0m[33m[72.027ms] [34;1m[rows:-][0m SELECT DATABASE()
 
-2022/04/14 18:28:33 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
-[0m[33m[75.944ms] [34;1m[rows:-][0m SELECT DATABASE()
+2022/04/14 19:07:12 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
+[0m[33m[145.880ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
 
-2022/04/14 18:28:33 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
-[0m[33m[150.997ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
+2022/04/14 19:07:12 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:205
+[0m[33m[144.952ms] [34;1m[rows:-][0m SELECT column_name, is_nullable, data_type, character_maximum_length, numeric_precision, numeric_scale , datetime_precision FROM information_schema.columns WHERE table_schema = 'sass' AND table_name = 'products' ORDER BY ORDINAL_POSITION
 
-2022/04/14 18:28:33 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:205
-[0m[33m[155.877ms] [34;1m[rows:-][0m SELECT column_name, is_nullable, data_type, character_maximum_length, numeric_precision, numeric_scale , datetime_precision FROM information_schema.columns WHERE table_schema = 'sass' AND table_name = 'products' ORDER BY ORDINAL_POSITION
+2022/04/14 19:07:12 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
+[0m[33m[69.843ms] [34;1m[rows:-][0m SELECT DATABASE()
 
-2022/04/14 18:28:34 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
-[0m[33m[74.864ms] [34;1m[rows:-][0m SELECT DATABASE()
+2022/04/14 19:07:12 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
+[0m[33m[144.956ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
 
-2022/04/14 18:28:34 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
-[0m[33m[151.959ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
+2022/04/14 19:07:12 [32m/home/antonio/SaaS/server/server.go:106
+[0m[33m[146.917ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'sass' AND table_name = 'products' AND index_name = 'idx_products_deleted_at'
 
-2022/04/14 18:28:34 [32m/home/antonio/SaaS/server/server.go:106
-[0m[33m[157.903ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'sass' AND table_name = 'products' AND index_name = 'idx_products_deleted_at'
+2022/04/14 19:07:12 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
+[0m[33m[72.882ms] [34;1m[rows:-][0m SELECT DATABASE()
 
-2022/04/14 18:28:34 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
-[0m[33m[75.948ms] [34;1m[rows:-][0m SELECT DATABASE()
+2022/04/14 19:07:12 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
+[0m[33m[142.024ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
 
-2022/04/14 18:28:34 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
-[0m[33m[152.903ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
+2022/04/14 19:07:12 [32m/home/antonio/SaaS/server/server.go:106
+[0m[33m[147.908ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'sass' AND table_name = 'images' AND table_type = 'BASE TABLE'
 
-2022/04/14 18:28:34 [32m/home/antonio/SaaS/server/server.go:106
-[0m[33m[154.932ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'sass' AND table_name = 'images' AND table_type = 'BASE TABLE'
+2022/04/14 19:07:13 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
+[0m[33m[71.985ms] [34;1m[rows:-][0m SELECT DATABASE()
 
-2022/04/14 18:28:34 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
-[0m[33m[73.956ms] [34;1m[rows:-][0m SELECT DATABASE()
+2022/04/14 19:07:13 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
+[0m[33m[146.965ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
 
-2022/04/14 18:28:34 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
-[0m[33m[149.933ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
+2022/04/14 19:07:13 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:205
+[0m[33m[148.919ms] [34;1m[rows:-][0m SELECT column_name, is_nullable, data_type, character_maximum_length, numeric_precision, numeric_scale , datetime_precision FROM information_schema.columns WHERE table_schema = 'sass' AND table_name = 'images' ORDER BY ORDINAL_POSITION
 
-2022/04/14 18:28:35 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:205
-[0m[33m[153.934ms] [34;1m[rows:-][0m SELECT column_name, is_nullable, data_type, character_maximum_length, numeric_precision, numeric_scale , datetime_precision FROM information_schema.columns WHERE table_schema = 'sass' AND table_name = 'images' ORDER BY ORDINAL_POSITION
+2022/04/14 19:07:13 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
+[0m[33m[70.842ms] [34;1m[rows:-][0m SELECT DATABASE()
 
-2022/04/14 18:28:35 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
-[0m[33m[74.840ms] [34;1m[rows:-][0m SELECT DATABASE()
+2022/04/14 19:07:13 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
+[0m[33m[146.022ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
 
-2022/04/14 18:28:35 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
-[0m[33m[150.050ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
+2022/04/14 19:07:13 [32m/home/antonio/SaaS/server/server.go:106
+[0m[33m[155.608ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'sass' AND table_name = 'images' AND index_name = 'idx_images_deleted_at'
 
-2022/04/14 18:28:35 [32m/home/antonio/SaaS/server/server.go:106
-[0m[33m[153.831ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'sass' AND table_name = 'images' AND index_name = 'idx_images_deleted_at'
+2022/04/14 19:07:13 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
+[0m[33m[71.969ms] [34;1m[rows:-][0m SELECT DATABASE()
 
-2022/04/14 18:28:35 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
-[0m[33m[74.919ms] [34;1m[rows:-][0m SELECT DATABASE()
+2022/04/14 19:07:13 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
+[0m[33m[142.927ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
 
-2022/04/14 18:28:35 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
-[0m[33m[149.936ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
+2022/04/14 19:07:14 [32m/home/antonio/SaaS/server/server.go:106
+[0m[33m[147.901ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'sass' AND table_name = 'categories' AND table_type = 'BASE TABLE'
 
-2022/04/14 18:28:35 [32m/home/antonio/SaaS/server/server.go:106
-[0m[33m[152.043ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'sass' AND table_name = 'categories' AND table_type = 'BASE TABLE'
+2022/04/14 19:07:14 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
+[0m[33m[71.941ms] [34;1m[rows:-][0m SELECT DATABASE()
 
-2022/04/14 18:28:35 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
-[0m[33m[74.878ms] [34;1m[rows:-][0m SELECT DATABASE()
+2022/04/14 19:07:14 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
+[0m[33m[145.068ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
 
-2022/04/14 18:28:36 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
-[0m[33m[152.909ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
+2022/04/14 19:07:14 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:205
+[0m[33m[149.909ms] [34;1m[rows:-][0m SELECT column_name, is_nullable, data_type, character_maximum_length, numeric_precision, numeric_scale , datetime_precision FROM information_schema.columns WHERE table_schema = 'sass' AND table_name = 'categories' ORDER BY ORDINAL_POSITION
 
-2022/04/14 18:28:36 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:205
-[0m[33m[153.881ms] [34;1m[rows:-][0m SELECT column_name, is_nullable, data_type, character_maximum_length, numeric_precision, numeric_scale , datetime_precision FROM information_schema.columns WHERE table_schema = 'sass' AND table_name = 'categories' ORDER BY ORDINAL_POSITION
+2022/04/14 19:07:14 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
+[0m[33m[72.754ms] [34;1m[rows:-][0m SELECT DATABASE()
 
-2022/04/14 18:28:36 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
-[0m[33m[73.908ms] [34;1m[rows:-][0m SELECT DATABASE()
+2022/04/14 19:07:14 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
+[0m[33m[143.207ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
 
-2022/04/14 18:28:36 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
-[0m[33m[149.926ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
+2022/04/14 19:07:14 [32m/home/antonio/SaaS/server/server.go:106
+[0m[33m[145.665ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'sass' AND table_name = 'categories' AND index_name = 'idx_categories_deleted_at'
 
-2022/04/14 18:28:36 [32m/home/antonio/SaaS/server/server.go:106
-[0m[33m[152.844ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'sass' AND table_name = 'categories' AND index_name = 'idx_categories_deleted_at'
+2022/04/14 19:07:14 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
+[0m[33m[71.922ms] [34;1m[rows:-][0m SELECT DATABASE()
 
-2022/04/14 18:28:36 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
-[0m[33m[75.860ms] [34;1m[rows:-][0m SELECT DATABASE()
+2022/04/14 19:07:15 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
+[0m[33m[143.914ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
 
-2022/04/14 18:28:36 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
-[0m[33m[153.067ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
+2022/04/14 19:07:15 [32m/home/antonio/SaaS/server/server.go:106
+[0m[33m[146.022ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'sass' AND table_name = 'mood_types' AND table_type = 'BASE TABLE'
 
-2022/04/14 18:28:36 [32m/home/antonio/SaaS/server/server.go:106
-[0m[33m[152.844ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'sass' AND table_name = 'mood_types' AND table_type = 'BASE TABLE'
+2022/04/14 19:07:15 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
+[0m[33m[72.821ms] [34;1m[rows:-][0m SELECT DATABASE()
 
-2022/04/14 18:28:37 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
-[0m[33m[73.970ms] [34;1m[rows:-][0m SELECT DATABASE()
+2022/04/14 19:07:15 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
+[0m[33m[143.026ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
 
-2022/04/14 18:28:37 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
-[0m[33m[151.899ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
+2022/04/14 19:07:15 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:205
+[0m[33m[147.925ms] [34;1m[rows:-][0m SELECT column_name, is_nullable, data_type, character_maximum_length, numeric_precision, numeric_scale , datetime_precision FROM information_schema.columns WHERE table_schema = 'sass' AND table_name = 'mood_types' ORDER BY ORDINAL_POSITION
 
-2022/04/14 18:28:37 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:205
-[0m[33m[153.929ms] [34;1m[rows:-][0m SELECT column_name, is_nullable, data_type, character_maximum_length, numeric_precision, numeric_scale , datetime_precision FROM information_schema.columns WHERE table_schema = 'sass' AND table_name = 'mood_types' ORDER BY ORDINAL_POSITION
+2022/04/14 19:07:15 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
+[0m[33m[70.904ms] [34;1m[rows:-][0m SELECT DATABASE()
 
-2022/04/14 18:28:37 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
-[0m[33m[74.898ms] [34;1m[rows:-][0m SELECT DATABASE()
+2022/04/14 19:07:15 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
+[0m[33m[144.917ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
 
-2022/04/14 18:28:37 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
-[0m[33m[153.924ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
+2022/04/14 19:07:15 [32m/home/antonio/SaaS/server/server.go:106
+[0m[33m[144.906ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'sass' AND table_name = 'mood_types' AND index_name = 'idx_mood_types_deleted_at'
 
-2022/04/14 18:28:37 [32m/home/antonio/SaaS/server/server.go:106
-[0m[33m[154.849ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'sass' AND table_name = 'mood_types' AND index_name = 'idx_mood_types_deleted_at'
+2022/04/14 19:07:15 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
+[0m[33m[71.006ms] [34;1m[rows:-][0m SELECT DATABASE()
 
-2022/04/14 18:28:37 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
-[0m[33m[75.831ms] [34;1m[rows:-][0m SELECT DATABASE()
+2022/04/14 19:07:16 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
+[0m[33m[142.901ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
 
-2022/04/14 18:28:37 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
-[0m[33m[148.967ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
+2022/04/14 19:07:16 [32m/home/antonio/SaaS/server/server.go:106
+[0m[33m[147.900ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'sass' AND table_name = 'moods' AND table_type = 'BASE TABLE'
 
-2022/04/14 18:28:38 [32m/home/antonio/SaaS/server/server.go:106
-[0m[33m[152.881ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'sass' AND table_name = 'moods' AND table_type = 'BASE TABLE'
+2022/04/14 19:07:16 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
+[0m[33m[69.926ms] [34;1m[rows:-][0m SELECT DATABASE()
 
-2022/04/14 18:28:38 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
-[0m[33m[75.916ms] [34;1m[rows:-][0m SELECT DATABASE()
+2022/04/14 19:07:16 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
+[0m[33m[147.933ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
 
-2022/04/14 18:28:38 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
-[0m[33m[152.092ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
+2022/04/14 19:07:16 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:205
+[0m[33m[149.952ms] [34;1m[rows:-][0m SELECT column_name, is_nullable, data_type, character_maximum_length, numeric_precision, numeric_scale , datetime_precision FROM information_schema.columns WHERE table_schema = 'sass' AND table_name = 'moods' ORDER BY ORDINAL_POSITION
 
-2022/04/14 18:28:38 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:205
-[0m[33m[153.855ms] [34;1m[rows:-][0m SELECT column_name, is_nullable, data_type, character_maximum_length, numeric_precision, numeric_scale , datetime_precision FROM information_schema.columns WHERE table_schema = 'sass' AND table_name = 'moods' ORDER BY ORDINAL_POSITION
+2022/04/14 19:07:16 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
+[0m[33m[72.871ms] [34;1m[rows:-][0m SELECT DATABASE()
 
-2022/04/14 18:28:38 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
-[0m[33m[74.828ms] [34;1m[rows:-][0m SELECT DATABASE()
+2022/04/14 19:07:16 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
+[0m[33m[144.906ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
 
-2022/04/14 18:28:38 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
-[0m[33m[149.942ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
+2022/04/14 19:07:16 [32m/home/antonio/SaaS/server/server.go:106
+[0m[33m[147.967ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'sass' AND table_name = 'moods' AND index_name = 'idx_moods_deleted_at'
 
-2022/04/14 18:28:38 [32m/home/antonio/SaaS/server/server.go:106
-[0m[33m[152.932ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'sass' AND table_name = 'moods' AND index_name = 'idx_moods_deleted_at'
+2022/04/14 19:07:17 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
+[0m[33m[71.956ms] [34;1m[rows:-][0m SELECT DATABASE()
 
-2022/04/14 18:28:38 [35m/home/antonio/SaaS/server/server.go:106
-[0m[31m[error] [0mfailed to parse value &model.UserAuth{Model:gorm.Model{ID:0x0, CreatedAt:time.Date(1, time.January, 1, 0, 0, 0, 0, time.UTC), UpdatedAt:time.Date(1, time.January, 1, 0, 0, 0, 0, time.UTC), DeletedAt:gorm.DeletedAt{Time:time.Date(1, time.January, 1, 0, 0, 0, 0, time.UTC), Valid:false}}, FirstName:"", LastName:"", Email:"", Password:"", Age:0x0, Phone:"", Address:[]*model.Address(nil)}, got error invalid field found for struct github.com/AntonioTrupac/hannaWebshop/model.UserAuth's field Address: define a valid foreign key for relations or implement the Valuer/Scanner interface
+2022/04/14 19:07:17 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
+[0m[33m[145.912ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
+
+2022/04/14 19:07:17 [32m/home/antonio/SaaS/server/server.go:106
+[0m[33m[145.911ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'sass' AND table_name = 'user_auths' AND table_type = 'BASE TABLE'
+
+2022/04/14 19:07:17 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
+[0m[33m[72.893ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2022/04/14 19:07:17 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
+[0m[33m[144.028ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
+
+2022/04/14 19:07:17 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:205
+[0m[33m[149.951ms] [34;1m[rows:-][0m SELECT column_name, is_nullable, data_type, character_maximum_length, numeric_precision, numeric_scale , datetime_precision FROM information_schema.columns WHERE table_schema = 'sass' AND table_name = 'user_auths' ORDER BY ORDINAL_POSITION
+
+2022/04/14 19:07:17 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:234
+[0m[33m[69.862ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2022/04/14 19:07:17 [32m/home/antonio/go/pkg/mod/gorm.io/driver/mysql@v1.2.3/migrator.go:237
+[0m[33m[146.935ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'sass%' ORDER BY SCHEMA_NAME='sass' DESC limit 1
+
+2022/04/14 19:07:18 [32m/home/antonio/SaaS/server/server.go:106
+[0m[33m[145.972ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'sass' AND table_name = 'user_auths' AND index_name = 'idx_user_auths_deleted_at'

@@ -61,7 +61,7 @@ func (u *users) UserCreate(ctx context.Context, input *model.UserAuth) (*model.U
 		}
 
 		for _, value := range input.Address {
-			value.UserId = int(input.ID)
+			value.UserAuthId = int(input.ID)
 		}
 
 		if err := tx.CreateInBatches(input.Address, 100).Error; err != nil {

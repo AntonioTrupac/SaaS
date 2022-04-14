@@ -9,6 +9,7 @@ type Address struct {
 	PostalCode  int
 	Country     string
 	UserId      int
+	UserAuthId  int
 }
 
 func (a *Address) TableName() string {
