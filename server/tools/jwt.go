@@ -2,6 +2,7 @@ package tools
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"time"
 
@@ -45,4 +46,17 @@ func GenerateJwt(ctx context.Context, userID int, email string) (string, error) 
 	}
 
 	return token, nil
+}
+
+func ValidateJwt(ctx context.Context, token string) (*jwt.Token, error) {
+	// validate and return the token as *jwt.Token
+	// first check the token method
+	// check if the signing method is HMAC since secret HS256 to sign the token is used
+	return jwt.ParseWithClaims(token, &JwtCustomClaim{}, func(t *jwt.Token) (interface{}, error) {
+		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("there has been a problem with the signing method")
+		}
+
+		return jwtSecret, nil
+	})
 }
