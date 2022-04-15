@@ -7,12 +7,15 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/AntonioTrupac/hannaWebshop/directives"
 	"github.com/AntonioTrupac/hannaWebshop/graph/resolver"
+	"github.com/AntonioTrupac/hannaWebshop/middleware"
 	"github.com/AntonioTrupac/hannaWebshop/model"
 	authService "github.com/AntonioTrupac/hannaWebshop/service/auth"
 	moodService "github.com/AntonioTrupac/hannaWebshop/service/moods"
 	productService "github.com/AntonioTrupac/hannaWebshop/service/products"
 	userService "github.com/AntonioTrupac/hannaWebshop/service/users"
+	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 
 	"gorm.io/driver/mysql"
@@ -55,17 +58,24 @@ func main() {
 
 	initDB()
 
+	router := mux.NewRouter()
+	router.Use(middleware.AuthMiddleware)
+
 	productsService := productService.NewProducts(database)
 	usersService := userService.NewUsers(database)
 	moodsService := moodService.NewMoods(database)
-	authService := authService.NewAuth(database, usersService)
-	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: resolver.NewResolver(usersService, productsService, moodsService, authService)}))
+	authServices := authService.NewAuth(database, usersService)
+
+	c := generated.Config{Resolvers: resolver.NewResolver(usersService, productsService, moodsService, authServices)}
+	c.Directives.Auth = directives.Auth
+
+	srv := handler.NewDefaultServer(generated.NewExecutableSchema(c))
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)
 
 	fmt.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
-	log.Fatal("", http.ListenAndServe(":"+port, nil))
+	log.Fatal("", http.ListenAndServe(":"+port, router))
 }
 
 func initDB() {

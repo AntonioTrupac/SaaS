@@ -16,7 +16,8 @@ type Address struct {
 	City        string `json:"city"`
 	PostalCode  int    `json:"postalCode"`
 	Country     string `json:"country"`
-	UserID      int    `json:"userId"`
+	UserID      *int   `json:"userId"`
+	UserAuthID  *int   `json:"userAuthId"`
 }
 
 type AddressInput struct {
@@ -41,6 +42,8 @@ type AuthUser struct {
 	Phone     string     `json:"phone"`
 	Address   []*Address `json:"address"`
 }
+
+func (AuthUser) IsActor() {}
 
 type Category struct {
 	ID   int    `json:"id"`

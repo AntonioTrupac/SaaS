@@ -3,6 +3,9 @@ directive @goField(
   name: String
 ) on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
 
+# new directive
+directive @auth on FIELD_DEFINITION
+
 scalar Any
 
 schema {
