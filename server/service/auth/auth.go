@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-
 	"github.com/AntonioTrupac/hannaWebshop/model"
 	service "github.com/AntonioTrupac/hannaWebshop/service/users"
 	"github.com/AntonioTrupac/hannaWebshop/tools"
@@ -58,7 +57,6 @@ func (a *auth) UserRegister(ctx context.Context, input *model.UserAuth) (interfa
 // UserLogin implements AuthService
 func (a *auth) UserLogin(ctx context.Context, email string, password string) (interface{}, error) {
 	user, err := a.user.GetUserByEmail(ctx, email)
-
 	if err != nil {
 		// if user not found
 		if err == gorm.ErrRecordNotFound {
@@ -70,7 +68,7 @@ func (a *auth) UserLogin(ctx context.Context, email string, password string) (in
 		return nil, err
 	}
 
-	if err := tools.ComparePassword(user.Password, password); err != nil {
+	if err := tools.ComparePassword(password, user.Password); err != nil {
 		return nil, err
 	}
 

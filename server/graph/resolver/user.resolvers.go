@@ -19,30 +19,8 @@ func (r *authOpsResolver) Register(ctx context.Context, obj *generated.AuthOps, 
 	return r.auth.UserRegister(ctx, types.ModelUserAuth(ctx, input))
 }
 
-func (r *mutationResolver) CreateUser(ctx context.Context, input generated.UserInput) (*generated.User, error) {
-	user := types.ModelUser(ctx, input)
-
-	err := r.users.CreateAUser(user)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return types.UserPayload(user), nil
-}
-
 func (r *mutationResolver) Auth(ctx context.Context) (*generated.AuthOps, error) {
 	return &generated.AuthOps{}, nil
-}
-
-func (r *queryResolver) Users(ctx context.Context) ([]*generated.User, error) {
-	users, err := r.users.GetUsers()
-
-	if err != nil {
-		return nil, err
-	}
-
-	return types.Users(users), nil
 }
 
 func (r *queryResolver) GetUser(ctx context.Context, id int) (interface{}, error) {

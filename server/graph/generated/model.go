@@ -144,30 +144,3 @@ type ProductInput struct {
 	Images      []*ImageInput    `json:"images"`
 	Categories  []*CategoryInput `json:"categories"`
 }
-
-type User struct {
-	ID        int        `json:"id"`
-	FirstName string     `json:"firstName"`
-	LastName  string     `json:"lastName"`
-	Age       int        `json:"age"`
-	Email     string     `json:"email"`
-	Password  string     `json:"password"`
-	Phone     string     `json:"phone"`
-	Address   []*Address `json:"address"`
-	Moods     []*Moods   `json:"moods"`
-	Habits    []*Habits  `json:"habits"`
-}
-
-func (User) IsActor() {}
-func (User) IsNode()  {}
-
-type UserInput struct {
-	FirstName string          `json:"firstName"`
-	LastName  string          `json:"lastName"`
-	Age       int             `json:"age"`
-	Email     string          `json:"email"`
-	Phone     string          `json:"phone"`
-	Address   []*AddressInput `json:"address"`
-	Moods     []*MoodsInput   `json:"moods"`
-	Habits    []*HabitsInput  `json:"habits"`
-}

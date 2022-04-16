@@ -38,6 +38,6 @@ func AuthMiddleware(next http.Handler) http.Handler {
 }
 
 func CtxValue(ctx context.Context) *tools.JwtCustomClaim {
-	raw, _ := ctx.Value(authString("string")).(*tools.JwtCustomClaim)
+	raw, _ := ctx.Value(authString("auth")).(*tools.JwtCustomClaim)
 	return raw
 }

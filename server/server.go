@@ -57,6 +57,13 @@ func main() {
 	}
 
 	initDB()
+	//sqlDb, _ := database.DB()
+	//defer func(sqlDb *sql.DB) {
+	//	err := sqlDb.Close()
+	//	if err != nil {
+	//		return
+	//	}
+	//}(sqlDb)
 
 	router := mux.NewRouter()
 	router.Use(middleware.AuthMiddleware)
@@ -71,8 +78,8 @@ func main() {
 
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(c))
 
-	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
-	http.Handle("/query", srv)
+	router.Handle("/", playground.Handler("GraphQL playground", "/query"))
+	router.Handle("/query", srv)
 
 	fmt.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
 	log.Fatal("", http.ListenAndServe(":"+port, router))
