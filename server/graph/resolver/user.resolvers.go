@@ -23,6 +23,10 @@ func (r *mutationResolver) Auth(ctx context.Context) (*generated.AuthOps, error)
 	return &generated.AuthOps{}, nil
 }
 
+func (r *mutationResolver) RefreshToken(ctx context.Context, input generated.RefreshTokenInput) (string, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+
 func (r *queryResolver) GetUser(ctx context.Context, id int) (interface{}, error) {
 	panic(fmt.Errorf("not implemented"))
 }

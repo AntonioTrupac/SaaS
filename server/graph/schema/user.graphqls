@@ -19,6 +19,10 @@ input NewAuthUser {
   address: [AddressInput!]!
 }
 
+input RefreshTokenInput {
+  token: String!
+}
+
 type AuthOps {
   login(email: String!, password: String!): Any! @goField(forceResolver: true)
   register(input: NewAuthUser!): Any! @goField(forceResolver: true)
@@ -30,4 +34,5 @@ extend type Query {
 
 extend type Mutation {
   auth: AuthOps! @goField(forceResolver: true)
+  refreshToken(input: RefreshTokenInput!): String! @goField(forceResolver: true)
 }

@@ -144,3 +144,7 @@ type ProductInput struct {
 	Images      []*ImageInput    `json:"images"`
 	Categories  []*CategoryInput `json:"categories"`
 }
+
+type RefreshTokenInput struct {
+	Token string `json:"token"`
+}
