@@ -6,7 +6,6 @@ package resolver
 import (
 	"context"
 	"fmt"
-
 	"github.com/AntonioTrupac/hannaWebshop/graph/generated"
 	"github.com/AntonioTrupac/hannaWebshop/graph/types"
 )

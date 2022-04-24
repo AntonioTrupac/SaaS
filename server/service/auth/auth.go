@@ -12,6 +12,7 @@ import (
 type AuthService interface {
 	UserRegister(ctx context.Context, input *model.UserAuth) (interface{}, error)
 	UserLogin(ctx context.Context, email string, password string) (interface{}, error)
+	//UserRefresh(ctx context.Context, )
 }
 
 type auth struct {
@@ -42,7 +43,7 @@ func (a *auth) UserRegister(ctx context.Context, input *model.UserAuth) (interfa
 		return nil, err
 	}
 
-	token, err := tools.GenerateJwt(ctx, int(newUser.ID), input.Email)
+	token, err := tools.GenerateAccessToken(ctx, int(newUser.ID), input.Email)
 
 	if err != nil {
 		return nil, err
@@ -72,14 +73,19 @@ func (a *auth) UserLogin(ctx context.Context, email string, password string) (in
 		return nil, err
 	}
 
-	token, err := tools.GenerateJwt(ctx, int(user.ID), user.Email)
+	accessToken, err := tools.GenerateAccessToken(ctx, int(user.ID), user.Email)
+	if err != nil {
+		return nil, err
+	}
 
+	refreshToken, err := tools.GenerateRefreshToken(ctx, int(user.ID), user.Email)
 	if err != nil {
 		return nil, err
 	}
 
 	return map[string]interface{}{
-		"token": token,
-		"email": user.Email,
+		"accessToken":  accessToken,
+		"refreshToken": refreshToken,
+		"email":        user.Email,
 	}, nil
 }
