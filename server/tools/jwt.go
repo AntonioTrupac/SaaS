@@ -103,6 +103,23 @@ func ValidateJwt(ctx context.Context, token string) (*jwt.Token, error) {
 	})
 }
 
+func ValidateRefreshToken(ctx context.Context, refreshToken string) (*jwt.Token, error) {
+	if refreshToken == "" {
+		return nil, fmt.Errorf("refresh token string empty")
+	}
+
+	// validate and return the token as *jwt.Token
+	// first check the token method
+	// check if the signing method is HMAC since secret HS256 to sign the token is used
+	return jwt.ParseWithClaims(refreshToken, &JwtCustomClaim{}, func(t *jwt.Token) (interface{}, error) {
+		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("there has been a problem with the signing method")
+		}
+
+		return refreshTokenSecret, nil
+	})
+}
+
 //func ValidateRefreshToken(ctx context.Context, refreshToken string) (model.UserAuth, error) {
 //	token, err := jwt.ParseWithClaims(refreshToken, &JwtCustomClaim{}, func(t *jwt.Token) (interface{}, error) {
 //		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {

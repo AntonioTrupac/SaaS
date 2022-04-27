@@ -28,8 +28,9 @@ type AddressInput struct {
 }
 
 type AuthOps struct {
-	Login    interface{} `json:"login"`
-	Register interface{} `json:"register"`
+	Login        interface{} `json:"login"`
+	Register     interface{} `json:"register"`
+	RefreshToken interface{} `json:"refreshToken"`
 }
 
 type AuthUser struct {

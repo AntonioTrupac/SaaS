@@ -56,8 +56,9 @@ type ComplexityRoot struct {
 	}
 
 	AuthOps struct {
-		Login    func(childComplexity int, email string, password string) int
-		Register func(childComplexity int, input NewAuthUser) int
+		Login        func(childComplexity int, email string, password string) int
+		RefreshToken func(childComplexity int, input RefreshTokenInput) int
+		Register     func(childComplexity int, input NewAuthUser) int
 	}
 
 	AuthUser struct {
@@ -117,7 +118,6 @@ type ComplexityRoot struct {
 		CreateMoodTypes func(childComplexity int, input *MoodTypeInput) int
 		CreateMoods     func(childComplexity int, input MoodsInput, typeID int) int
 		CreateProducts  func(childComplexity int, input ProductInput) int
-		RefreshToken    func(childComplexity int, input RefreshTokenInput) int
 	}
 
 	Product struct {
@@ -146,6 +146,7 @@ type ComplexityRoot struct {
 type AuthOpsResolver interface {
 	Login(ctx context.Context, obj *AuthOps, email string, password string) (interface{}, error)
 	Register(ctx context.Context, obj *AuthOps, input NewAuthUser) (interface{}, error)
+	RefreshToken(ctx context.Context, obj *AuthOps, input RefreshTokenInput) (interface{}, error)
 }
 type MutationResolver interface {
 	CreateProducts(ctx context.Context, input ProductInput) (*Product, error)
@@ -153,7 +154,6 @@ type MutationResolver interface {
 	CreateMoods(ctx context.Context, input MoodsInput, typeID int) (*Moods, error)
 	CreateMoodTypes(ctx context.Context, input *MoodTypeInput) (*MoodType, error)
 	Auth(ctx context.Context) (*AuthOps, error)
-	RefreshToken(ctx context.Context, input RefreshTokenInput) (string, error)
 }
 type QueryResolver interface {
 	GetProducts(ctx context.Context) ([]*Product, error)
@@ -241,6 +241,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.AuthOps.Login(childComplexity, args["email"].(string), args["password"].(string)), true
+
+	case "AuthOps.refreshToken":
+		if e.complexity.AuthOps.RefreshToken == nil {
+			break
+		}
+
+		args, err := ec.field_AuthOps_refreshToken_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.AuthOps.RefreshToken(childComplexity, args["input"].(RefreshTokenInput)), true
 
 	case "AuthOps.register":
 		if e.complexity.AuthOps.Register == nil {
@@ -518,18 +530,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.CreateProducts(childComplexity, args["input"].(ProductInput)), true
-
-	case "Mutation.refreshToken":
-		if e.complexity.Mutation.RefreshToken == nil {
-			break
-		}
-
-		args, err := ec.field_Mutation_refreshToken_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Mutation.RefreshToken(childComplexity, args["input"].(RefreshTokenInput)), true
 
 	case "Product.category":
 		if e.complexity.Product.Category == nil {
@@ -917,6 +917,7 @@ input RefreshTokenInput {
 type AuthOps {
   login(email: String!, password: String!): Any! @goField(forceResolver: true)
   register(input: NewAuthUser!): Any! @goField(forceResolver: true)
+  refreshToken(input: RefreshTokenInput!): Any! @goField(forceResolver: true)
 }
 
 extend type Query {
@@ -925,7 +926,6 @@ extend type Query {
 
 extend type Mutation {
   auth: AuthOps! @goField(forceResolver: true)
-  refreshToken(input: RefreshTokenInput!): String! @goField(forceResolver: true)
 }
 `, BuiltIn: false},
 }
@@ -956,6 +956,21 @@ func (ec *executionContext) field_AuthOps_login_args(ctx context.Context, rawArg
 		}
 	}
 	args["password"] = arg1
+	return args, nil
+}
+
+func (ec *executionContext) field_AuthOps_refreshToken_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 RefreshTokenInput
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNRefreshTokenInput2githubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐRefreshTokenInput(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
 	return args, nil
 }
 
@@ -1035,21 +1050,6 @@ func (ec *executionContext) field_Mutation_createProducts_args(ctx context.Conte
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 		arg0, err = ec.unmarshalNProductInput2githubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐProductInput(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["input"] = arg0
-	return args, nil
-}
-
-func (ec *executionContext) field_Mutation_refreshToken_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	var arg0 RefreshTokenInput
-	if tmp, ok := rawArgs["input"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNRefreshTokenInput2githubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐRefreshTokenInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -1478,6 +1478,48 @@ func (ec *executionContext) _AuthOps_register(ctx context.Context, field graphql
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
 		return ec.resolvers.AuthOps().Register(rctx, obj, args["input"].(NewAuthUser))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(interface{})
+	fc.Result = res
+	return ec.marshalNAny2interface(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _AuthOps_refreshToken(ctx context.Context, field graphql.CollectedField, obj *AuthOps) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "AuthOps",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_AuthOps_refreshToken_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.AuthOps().RefreshToken(rctx, obj, args["input"].(RefreshTokenInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2736,48 +2778,6 @@ func (ec *executionContext) _Mutation_auth(ctx context.Context, field graphql.Co
 	res := resTmp.(*AuthOps)
 	fc.Result = res
 	return ec.marshalNAuthOps2ᚖgithubᚗcomᚋAntonioTrupacᚋhannaWebshopᚋgraphᚋgeneratedᚐAuthOps(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _Mutation_refreshToken(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:     "Mutation",
-		Field:      field,
-		Args:       nil,
-		IsMethod:   true,
-		IsResolver: true,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	rawArgs := field.ArgumentMap(ec.Variables)
-	args, err := ec.field_Mutation_refreshToken_args(ctx, rawArgs)
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	fc.Args = args
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().RefreshToken(rctx, args["input"].(RefreshTokenInput))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Product_id(ctx context.Context, field graphql.CollectedField, obj *Product) (ret graphql.Marshaler) {
@@ -5023,6 +5023,20 @@ func (ec *executionContext) _AuthOps(ctx context.Context, sel ast.SelectionSet, 
 				}
 				return res
 			})
+		case "refreshToken":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._AuthOps_refreshToken(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -5366,11 +5380,6 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			out.Values[i] = ec._Mutation_createMoodTypes(ctx, field)
 		case "auth":
 			out.Values[i] = ec._Mutation_auth(ctx, field)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
-		case "refreshToken":
-			out.Values[i] = ec._Mutation_refreshToken(ctx, field)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}

@@ -26,7 +26,7 @@ input RefreshTokenInput {
 type AuthOps {
   login(email: String!, password: String!): Any! @goField(forceResolver: true)
   register(input: NewAuthUser!): Any! @goField(forceResolver: true)
-  refreshToken(input: RefreshTokenInput!): String! @goField(forceResolver: true)
+  refreshToken(input: RefreshTokenInput!): Any! @goField(forceResolver: true)
 }
 
 extend type Query {

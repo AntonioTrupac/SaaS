@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"github.com/AntonioTrupac/hannaWebshop/model"
 	service "github.com/AntonioTrupac/hannaWebshop/service/users"
 	"github.com/AntonioTrupac/hannaWebshop/tools"
@@ -12,7 +13,7 @@ import (
 type AuthService interface {
 	UserRegister(ctx context.Context, input *model.UserAuth) (interface{}, error)
 	UserLogin(ctx context.Context, email string, password string) (interface{}, error)
-	//UserRefresh(ctx context.Context, )
+	Refresh(ctx context.Context, refreshToken string) (interface{}, error)
 }
 
 type auth struct {
@@ -87,5 +88,31 @@ func (a *auth) UserLogin(ctx context.Context, email string, password string) (in
 		"accessToken":  accessToken,
 		"refreshToken": refreshToken,
 		"email":        user.Email,
+	}, nil
+}
+
+func (a *auth) Refresh(ctx context.Context, refreshToken string) (interface{}, error) {
+	validate, err := tools.ValidateRefreshToken(ctx, refreshToken)
+
+	if err != nil || !validate.Valid {
+		return nil, fmt.Errorf("refresh token invalid")
+	}
+
+	customClaim, _ := validate.Claims.(*tools.JwtCustomClaim)
+
+	fmt.Println(customClaim.Email, customClaim.UserID)
+
+	newAccessToken, accessTokenErr := tools.GenerateAccessToken(ctx, customClaim.UserID, customClaim.Email)
+	if accessTokenErr != nil {
+		return nil, err
+	}
+
+	newRefreshToken, refreshTokenErr := tools.GenerateRefreshToken(ctx, customClaim.UserID, customClaim.Email)
+	if refreshTokenErr != nil {
+		return nil, err
+	}
+	return map[string]interface{}{
+		"accessToken":  newAccessToken,
+		"refreshToken": newRefreshToken,
 	}, nil
 }
