@@ -52,7 +52,6 @@ type ComplexityRoot struct {
 		ID          func(childComplexity int) int
 		PostalCode  func(childComplexity int) int
 		UserAuthID  func(childComplexity int) int
-		UserID      func(childComplexity int) int
 	}
 
 	AuthOps struct {
@@ -222,13 +221,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Address.UserAuthID(childComplexity), true
-
-	case "Address.userId":
-		if e.complexity.Address.UserID == nil {
-			break
-		}
-
-		return e.complexity.Address.UserID(childComplexity), true
 
 	case "AuthOps.login":
 		if e.complexity.AuthOps.Login == nil {
@@ -733,7 +725,6 @@ var sources = []*ast.Source{
   city: String!
   postalCode: Int!
   country: String!
-  userId: Int
   userAuthId: Int
 }
 
@@ -1344,38 +1335,6 @@ func (ec *executionContext) _Address_country(ctx context.Context, field graphql.
 	res := resTmp.(string)
 	fc.Result = res
 	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _Address_userId(ctx context.Context, field graphql.CollectedField, obj *Address) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:     "Address",
-		Field:      field,
-		Args:       nil,
-		IsMethod:   false,
-		IsResolver: false,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.UserID, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*int)
-	fc.Result = res
-	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Address_userAuthId(ctx context.Context, field graphql.CollectedField, obj *Address) (ret graphql.Marshaler) {
@@ -4969,8 +4928,6 @@ func (ec *executionContext) _Address(ctx context.Context, sel ast.SelectionSet, 
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "userId":
-			out.Values[i] = ec._Address_userId(ctx, field, obj)
 		case "userAuthId":
 			out.Values[i] = ec._Address_userAuthId(ctx, field, obj)
 		default:

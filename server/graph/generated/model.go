@@ -16,7 +16,6 @@ type Address struct {
 	City        string `json:"city"`
 	PostalCode  int    `json:"postalCode"`
 	Country     string `json:"country"`
-	UserID      *int   `json:"userId"`
 	UserAuthID  *int   `json:"userAuthId"`
 }
 
