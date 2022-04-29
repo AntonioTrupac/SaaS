@@ -1,28 +1,4 @@
-type User implements Actor & Node {
-  id: Int!
-  firstName: String!
-  lastName: String!
-  age: Int!
-  email: String!
-  password: String!
-  phone: String!
-  address: [Address!]!
-  moods: [Moods]
-  habits: [Habits]
-}
-
-input UserInput {
-  firstName: String!
-  lastName: String!
-  age: Int!
-  email: String!
-  phone: String!
-  address: [AddressInput!]!
-  moods: [MoodsInput]
-  habits: [HabitsInput]
-}
-
-type AuthUser {
+type AuthUser implements Actor {
   id: Int!
   firstName: String!
   lastName: String!
@@ -43,17 +19,20 @@ input NewAuthUser {
   address: [AddressInput!]!
 }
 
+input RefreshTokenInput {
+  token: String!
+}
+
 type AuthOps {
   login(email: String!, password: String!): Any! @goField(forceResolver: true)
   register(input: NewAuthUser!): Any! @goField(forceResolver: true)
+  refreshToken(input: RefreshTokenInput!): Any! @goField(forceResolver: true)
 }
 
 extend type Query {
-  users: [User!]!
   getUser(id: Int!): Any! @goField(forceResolver: true)
 }
 
 extend type Mutation {
-  createUser(input: UserInput!): User!
   auth: AuthOps! @goField(forceResolver: true)
 }

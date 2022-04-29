@@ -7,11 +7,15 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/AntonioTrupac/hannaWebshop/directives"
 	"github.com/AntonioTrupac/hannaWebshop/graph/resolver"
+	"github.com/AntonioTrupac/hannaWebshop/middleware"
 	"github.com/AntonioTrupac/hannaWebshop/model"
+	authService "github.com/AntonioTrupac/hannaWebshop/service/auth"
 	moodService "github.com/AntonioTrupac/hannaWebshop/service/moods"
 	productService "github.com/AntonioTrupac/hannaWebshop/service/products"
 	userService "github.com/AntonioTrupac/hannaWebshop/service/users"
+	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 
 	"gorm.io/driver/mysql"
@@ -53,17 +57,32 @@ func main() {
 	}
 
 	initDB()
+	//sqlDb, _ := database.DB()
+	//defer func(sqlDb *sql.DB) {
+	//	err := sqlDb.Close()
+	//	if err != nil {
+	//		return
+	//	}
+	//}(sqlDb)
+
+	router := mux.NewRouter()
+	router.Use(middleware.AuthMiddleware)
 
 	productsService := productService.NewProducts(database)
 	usersService := userService.NewUsers(database)
 	moodsService := moodService.NewMoods(database)
-	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: resolver.NewResolver(usersService, productsService, moodsService)}))
+	authServices := authService.NewAuth(database, usersService)
 
-	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
-	http.Handle("/query", srv)
+	c := generated.Config{Resolvers: resolver.NewResolver(usersService, productsService, moodsService, authServices)}
+	c.Directives.Auth = directives.Auth
+
+	srv := handler.NewDefaultServer(generated.NewExecutableSchema(c))
+
+	router.Handle("/", playground.Handler("GraphQL playground", "/query"))
+	router.Handle("/query", srv)
 
 	fmt.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
-	log.Fatal("", http.ListenAndServe(":"+port, nil))
+	log.Fatal("", http.ListenAndServe(":"+port, router))
 }
 
 func initDB() {
@@ -101,7 +120,7 @@ func initDB() {
 }
 
 func migrate(db *gorm.DB) error {
-	err := db.Debug().AutoMigrate(&model.User{}, &model.Address{}, &model.Product{}, &model.Image{}, &model.Category{}, &model.Mood{}, &model.MoodType{})
+	err := db.Debug().AutoMigrate(&model.User{}, &model.Address{}, &model.Product{}, &model.Image{}, &model.Category{}, &model.Mood{}, &model.MoodType{}, &model.UserAuth{})
 	if err != nil {
 		return err
 	}

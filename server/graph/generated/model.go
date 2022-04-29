@@ -16,7 +16,8 @@ type Address struct {
 	City        string `json:"city"`
 	PostalCode  int    `json:"postalCode"`
 	Country     string `json:"country"`
-	UserID      int    `json:"userId"`
+	UserID      *int   `json:"userId"`
+	UserAuthID  *int   `json:"userAuthId"`
 }
 
 type AddressInput struct {
@@ -27,8 +28,9 @@ type AddressInput struct {
 }
 
 type AuthOps struct {
-	Login    interface{} `json:"login"`
-	Register interface{} `json:"register"`
+	Login        interface{} `json:"login"`
+	Register     interface{} `json:"register"`
+	RefreshToken interface{} `json:"refreshToken"`
 }
 
 type AuthUser struct {
@@ -41,6 +43,8 @@ type AuthUser struct {
 	Phone     string     `json:"phone"`
 	Address   []*Address `json:"address"`
 }
+
+func (AuthUser) IsActor() {}
 
 type Category struct {
 	ID   int    `json:"id"`
@@ -142,29 +146,6 @@ type ProductInput struct {
 	Categories  []*CategoryInput `json:"categories"`
 }
 
-type User struct {
-	ID        int        `json:"id"`
-	FirstName string     `json:"firstName"`
-	LastName  string     `json:"lastName"`
-	Age       int        `json:"age"`
-	Email     string     `json:"email"`
-	Password  string     `json:"password"`
-	Phone     string     `json:"phone"`
-	Address   []*Address `json:"address"`
-	Moods     []*Moods   `json:"moods"`
-	Habits    []*Habits  `json:"habits"`
-}
-
-func (User) IsActor() {}
-func (User) IsNode()  {}
-
-type UserInput struct {
-	FirstName string          `json:"firstName"`
-	LastName  string          `json:"lastName"`
-	Age       int             `json:"age"`
-	Email     string          `json:"email"`
-	Phone     string          `json:"phone"`
-	Address   []*AddressInput `json:"address"`
-	Moods     []*MoodsInput   `json:"moods"`
-	Habits    []*HabitsInput  `json:"habits"`
+type RefreshTokenInput struct {
+	Token string `json:"token"`
 }

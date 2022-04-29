@@ -12,37 +12,19 @@ import (
 )
 
 func (r *authOpsResolver) Login(ctx context.Context, obj *generated.AuthOps, email string, password string) (interface{}, error) {
-	panic(fmt.Errorf("not implemented"))
+	return r.auth.UserLogin(ctx, email, password)
 }
 
 func (r *authOpsResolver) Register(ctx context.Context, obj *generated.AuthOps, input generated.NewAuthUser) (interface{}, error) {
-	panic(fmt.Errorf("not implemented"))
+	return r.auth.UserRegister(ctx, types.ModelUserAuth(ctx, input))
 }
 
-func (r *mutationResolver) CreateUser(ctx context.Context, input generated.UserInput) (*generated.User, error) {
-	user := types.ModelUser(ctx, input)
-
-	err := r.users.CreateAUser(user)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return types.UserPayload(user), nil
+func (r *authOpsResolver) RefreshToken(ctx context.Context, obj *generated.AuthOps, input generated.RefreshTokenInput) (interface{}, error) {
+	return r.auth.Refresh(ctx, input.Token)
 }
 
 func (r *mutationResolver) Auth(ctx context.Context) (*generated.AuthOps, error) {
-	panic(fmt.Errorf("not implemented"))
-}
-
-func (r *queryResolver) Users(ctx context.Context) ([]*generated.User, error) {
-	users, err := r.users.GetUsers()
-
-	if err != nil {
-		return nil, err
-	}
-
-	return types.Users(users), nil
+	return &generated.AuthOps{}, nil
 }
 
 func (r *queryResolver) GetUser(ctx context.Context, id int) (interface{}, error) {

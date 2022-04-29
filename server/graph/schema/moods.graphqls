@@ -19,7 +19,7 @@ input MoodTypeInput {
 }
 
 extend type Query {
-    getMoods: [Moods!]!
+    getMoods: [Moods!]! @goField(forceResolver: true) @auth
     getMoodById(id: Int!): Moods!
     getMoodTypes: [MoodType!]!
 }
