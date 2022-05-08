@@ -5,7 +5,7 @@ import clsxm from '@/lib/clsxm';
 
 enum ButtonVariant {
   'primary',
-  'outline',
+  'secondary',
   'ghost',
   'light',
   'dark',
@@ -38,20 +38,19 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         type='button'
         disabled={disabled}
         className={clsxm(
-          'inline-flex items-center rounded px-4 py-2 font-semibold',
+          'inline-flex items-center rounded-md px-4 py-2 font-semibold',
           'focus:outline-none focus-visible:ring focus-visible:ring-primary-500',
           'shadow-sm',
           'transition-colors duration-75',
           //#region  //*=========== Variants ===========
           [
             variant === 'primary' && [
-              'bg-primary-500 text-white',
-              'border border-primary-600',
-              'hover:bg-primary-600 hover:text-white',
-              'active:bg-primary-500',
-              'disabled:bg-primary-400 disabled:hover:bg-primary-400',
+              'bg-primary-300 text-white',
+              'hover:bg-primary-400 hover:text-white',
+              'active:bg-primary-400',
+              'disabled:bg-primary-75 disabled:hover:bg-primary-100',
             ],
-            variant === 'outline' && [
+            variant === 'secondary' && [
               'text-primary-500',
               'border border-primary-500',
               'hover:bg-primary-50 active:bg-primary-100 disabled:bg-primary-100',
@@ -92,7 +91,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
               {
                 'text-white': ['primary', 'dark'].includes(variant),
                 'text-black': ['light'].includes(variant),
-                'text-primary-500': ['outline', 'ghost'].includes(variant),
+                'text-primary-500': ['secondary', 'ghost'].includes(variant),
               }
             )}
           >

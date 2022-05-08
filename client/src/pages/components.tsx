@@ -1,4 +1,3 @@
-// !STARTERCONF You can delete this page
 import clsx from 'clsx';
 import * as React from 'react';
 
@@ -12,6 +11,8 @@ import UnstyledLink from '@/components/links/UnstyledLink';
 import NextImage from '@/components/NextImage';
 import Seo from '@/components/Seo';
 import Skeleton from '@/components/Skeleton';
+
+import Heading from '@/typography/Headings/Heading';
 
 type Color = typeof colorList[number];
 
@@ -106,16 +107,16 @@ export default function ComponentsPage() {
                   <div className='flex h-10 w-10 items-center justify-center rounded bg-primary-500 text-black'>
                     500
                   </div>
-                  <div className='flex h-10 w-10 items-center justify-center rounded bg-primary-600 text-white'>
+                  <div className='bg-primary-600 flex h-10 w-10 items-center justify-center rounded text-white'>
                     600
                   </div>
-                  <div className='flex h-10 w-10 items-center justify-center rounded bg-primary-700 text-white'>
+                  <div className='bg-primary-700 flex h-10 w-10 items-center justify-center rounded text-white'>
                     700
                   </div>
-                  <div className='flex h-10 w-10 items-center justify-center rounded bg-primary-800 text-white'>
+                  <div className='bg-primary-800 flex h-10 w-10 items-center justify-center rounded text-white'>
                     800
                   </div>
-                  <div className='flex h-10 w-10 items-center justify-center rounded bg-primary-900 text-white'>
+                  <div className='bg-primary-900 flex h-10 w-10 items-center justify-center rounded text-white'>
                     900
                   </div>
                 </div>
@@ -234,7 +235,7 @@ export default function ComponentsPage() {
                 </p>
                 <div className='flex flex-wrap gap-2'>
                   <Button variant='primary'>Primary Variant</Button>
-                  <Button variant='outline' isDarkBg={mode === 'dark'}>
+                  <Button variant='secondary' isDarkBg={mode === 'dark'}>
                     Outline Variant
                   </Button>
                   <Button variant='ghost' isDarkBg={mode === 'dark'}>
@@ -247,7 +248,11 @@ export default function ComponentsPage() {
                   <Button disabled variant='primary'>
                     Disabled
                   </Button>
-                  <Button disabled variant='outline' isDarkBg={mode === 'dark'}>
+                  <Button
+                    disabled
+                    variant='secondary'
+                    isDarkBg={mode === 'dark'}
+                  >
                     Disabled
                   </Button>
                   <Button disabled variant='ghost' isDarkBg={mode === 'dark'}>
@@ -266,7 +271,7 @@ export default function ComponentsPage() {
                   </Button>
                   <Button
                     isLoading
-                    variant='outline'
+                    variant='secondary'
                     isDarkBg={mode === 'dark'}
                   >
                     Disabled
@@ -312,6 +317,12 @@ export default function ComponentsPage() {
                 <Skeleton className='h-72 w-72' />
               </li>
             </ol>
+          </div>
+
+          <div>
+            <Heading className='pb-4' variant='h3'>
+              TEST HEADING
+            </Heading>
           </div>
         </section>
       </main>

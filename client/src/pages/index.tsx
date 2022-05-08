@@ -27,7 +27,7 @@ export default function HomePage() {
       <Seo />
 
       <main>
-        <section className='bg-white'>
+        <section className='bg-secondary-50'>
           <div className='layout flex min-h-screen flex-col items-center justify-center text-center'>
             <ButtonLink className='mt-6' href='/components' variant='light'>
               See all components
