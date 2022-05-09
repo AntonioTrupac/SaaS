@@ -1,5 +1,6 @@
-import clsxm from '@/lib/clsxm';
 import { ComponentPropsWithoutRef, PropsWithChildren } from 'react';
+
+import clsxm from '@/lib/clsxm';
 
 enum HeadingVariant {
   'h1',
@@ -8,29 +9,28 @@ enum HeadingVariant {
 }
 
 type HeadingProps = {
-  bold?: boolean;
+  isBold?: boolean;
+  className?: string;
   // keyof typeof infers the type of a js object and returns a type
   // that is the union of its keys
   variant?: keyof typeof HeadingVariant;
-  className?: string;
-  fontNormal?: boolean;
 };
 
 type Props = HeadingProps & ComponentPropsWithoutRef<'h1'>;
 
 const classes = {
   general: 'text-dark',
-  h1: (fontNormal: boolean | undefined) =>
+  h1: (isBold: boolean | undefined) =>
     `${
-      fontNormal ? 'font-normal' : 'font-bold'
+      isBold ? 'font-bold' : 'font-normal'
     } text-[64px] tracking-[-0.02em] leading-[75px]`,
-  h2: (fontNormal: boolean | undefined) =>
+  h2: (isBold: boolean | undefined) =>
     `${
-      fontNormal ? 'font-normal' : 'font-bold'
+      isBold ? 'font-bold' : 'font-normal'
     } text-[40px] tracking-[-0.02.em] leading-[47px]`,
-  h3: (fontNormal: boolean | undefined) =>
+  h3: (isBold: boolean | undefined) =>
     `${
-      fontNormal ? 'font-normal' : 'font-bold'
+      isBold ? 'font-bold' : 'font-normal'
     } text-2xl tracking-[0.02em] leading-6`,
 };
 
@@ -38,7 +38,7 @@ const Heading = ({
   children,
   className,
   variant: Heading,
-  fontNormal,
+  isBold,
 }: PropsWithChildren<Props>) => {
   switch (Heading) {
     case 'h1':
@@ -48,11 +48,12 @@ const Heading = ({
         <Heading
           className={clsxm(
             className,
+            classes.general,
             //#region  //*=========== Variants ===========
             [
-              Heading === 'h1' && classes.h1(fontNormal),
-              Heading === 'h2' && classes.h2(fontNormal),
-              Heading === 'h3' && classes.h3(fontNormal),
+              Heading === 'h1' && classes.h1(isBold),
+              Heading === 'h2' && classes.h2(isBold),
+              Heading === 'h3' && classes.h3(isBold),
             ]
             //#endregion  //*======== Variants ===========
           )}
@@ -61,7 +62,11 @@ const Heading = ({
         </Heading>
       );
     default:
-      return <h1>{children}</h1>;
+      return (
+        <h1 className={clsxm(className, classes.h1, classes.general)}>
+          {children}
+        </h1>
+      );
   }
 };
 

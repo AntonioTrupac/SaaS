@@ -13,6 +13,7 @@ import Seo from '@/components/Seo';
 import Skeleton from '@/components/Skeleton';
 
 import Heading from '@/typography/Headings/Heading';
+import Paragraph from '@/typography/Paragraph/Paragraph';
 
 type Color = typeof colorList[number];
 
@@ -323,7 +324,9 @@ export default function ComponentsPage() {
             <Heading className='pb-4' variant='h3'>
               TEST HEADING
             </Heading>
+            <Paragraph>HELLOU</Paragraph>
           </div>
+          <sub className='subtitle'>LALAL</sub>
         </section>
       </main>
     </Layout>

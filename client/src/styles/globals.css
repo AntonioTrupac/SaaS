@@ -17,24 +17,20 @@
   }
 
   /* #region  /**=========== Typography =========== */
-  h1,
-  .h1 {
-    @apply font-primary text-2xl font-bold md:text-4xl;
+  small, .small-text {
+    @apply font-normal text-sm leading-4;
   }
 
-  h2,
-  .h2 {
-    @apply font-primary text-xl font-bold md:text-3xl;
+  sub, .subtitle {
+    @apply font-normal text-2xl tracking-tight;
+
+    &-bold {
+      @apply font-bold;
+    }
   }
 
-  h3,
-  .h3 {
-    @apply font-primary text-lg font-bold md:text-2xl;
-  }
-
-  body,
-  .p {
-    @apply font-primary text-sm md:text-base;
+  .button-text, .link-text {
+    @apply font-normal text-base;
   }
   /* #endregion  /**======== Typography =========== */
 

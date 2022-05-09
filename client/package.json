@@ -47,6 +47,8 @@
     "lint-staged": "^11.2.6",
     "next-sitemap": "^1.9.12",
     "postcss": "^8.4.7",
+    "postcss-import": "^14.1.0",
+    "postcss-nesting": "^10.1.4",
     "prettier": "^2.5.1",
     "prettier-plugin-tailwindcss": "^0.1.8",
     "standard-version": "^9.3.2",
