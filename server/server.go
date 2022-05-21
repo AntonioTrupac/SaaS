@@ -18,6 +18,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 
+	"github.com/rs/cors"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 
@@ -57,17 +58,24 @@ func main() {
 	}
 
 	initDB()
-	//sqlDb, _ := database.DB()
-	//defer func(sqlDb *sql.DB) {
-	//	err := sqlDb.Close()
-	//	if err != nil {
-	//		return
-	//	}
-	//}(sqlDb)
+	sqlDb, _ := database.DB()
+	defer func(sqlDb *sql.DB) {
+		err := sqlDb.Close()
+		if err != nil {
+			return
+		}
+	}(sqlDb)
 
 	router := mux.NewRouter()
-	router.Use(middleware.AuthMiddleware)
 
+	router.Use(middleware.AuthMiddleware)
+	router.Use(cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:3000"},
+		AllowedMethods:   []string{},
+		AllowedHeaders:   []string{},
+		AllowCredentials: true,
+		Debug:            true,
+	}).Handler)
 	productsService := productService.NewProducts(database)
 	usersService := userService.NewUsers(database)
 	moodsService := moodService.NewMoods(database)

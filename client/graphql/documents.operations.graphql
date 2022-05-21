@@ -1,0 +1,6 @@
+query GetMoodTypes {
+    getMoodTypes {
+        id
+        name
+    }
+}

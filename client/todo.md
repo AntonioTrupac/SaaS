@@ -1,0 +1,4 @@
+- [ ] Implement react query into next js project
+- [ ] Connect react query with the backend
+- [ ] Find out if it's better to use codegen or write queries
+- [ ] Figure out the workflow for the usage of codegen generated hooks
