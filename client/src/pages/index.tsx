@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import useMoodTypes from '@/hooks/useMoodTypes';
 
+import Register from '@/components/form/Register';
 import Layout from '@/components/layout/Layout';
 import ButtonLink from '@/components/links/ButtonLink';
 import Seo from '@/components/Seo';
@@ -25,6 +26,7 @@ export default function HomePage() {
                 return <div key={moodType.id}>{moodType.name}</div>;
               })}
             </div>
+            <Register />
           </div>
         </section>
       </main>
