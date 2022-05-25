@@ -1,9 +1,10 @@
 import * as React from 'react';
 
-import Register from '@/components/form/Register';
 import Layout from '@/components/layout/Layout';
-import ButtonLink from '@/components/links/ButtonLink';
 import Seo from '@/components/Seo';
+
+import Register from '@/ui/form/Register';
+import ButtonLink from '@/ui/links/ButtonLink';
 
 export default function HomePage() {
   return (

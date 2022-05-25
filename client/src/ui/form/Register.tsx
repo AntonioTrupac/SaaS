@@ -3,14 +3,14 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 
 import useRegisterMutation from '@/hooks/useRegisterMutation';
 
-import Button from '@/components/buttons/Button';
-import { registerValidationSchema } from '@/components/form/validation';
-
 import { RegisterVariables } from '@/graphql';
+import Button from '@/ui/buttons/Button';
+import { registerValidationSchema } from '@/ui/form/validation';
+import TextField from '@/ui/textField/TextField';
 
 import Form from './Form';
 
-type IFormInput = {
+export type IFormInput = {
   firstName: string;
   lastName: string;
   email: string;
@@ -60,15 +60,21 @@ const Register = () => {
       },
     };
 
-    console.log(mappedData);
     mutate(mappedData);
     reset();
   };
 
   return (
     <Form className='flex flex-col' onSubmit={handleSubmit(onSubmit)}>
-      <input type='text' {...register('firstName')} placeholder='First Name' />
-      <p>{errors.firstName?.message}</p>
+      <TextField
+        type='text'
+        register={register}
+        inputFieldName='firstName'
+        placeholder='First Name'
+        disabled={false}
+      />
+      {/*<input type='text' {...register('firstName')} placeholder='First Name' />*/}
+      {/*<p>{errors.firstName?.message}</p>*/}
       <input type='text' {...register('lastName')} placeholder='Last Name' />
       <p>{errors.lastName?.message}</p>
       <input type='email' {...register('email')} placeholder='Email' />
@@ -80,6 +86,7 @@ const Register = () => {
       <p>{errors.country?.message}</p>
       <input type='text' {...register('city')} placeholder='City' />
       <p>{errors.city?.message}</p>
+
       <Button variant='primary' type='submit'>
         Submit
       </Button>

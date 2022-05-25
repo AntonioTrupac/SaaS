@@ -1,19 +1,19 @@
 import clsx from 'clsx';
 import * as React from 'react';
 
-import Button from '@/components/buttons/Button';
 import Layout from '@/components/layout/Layout';
-import ArrowLink from '@/components/links/ArrowLink';
-import ButtonLink from '@/components/links/ButtonLink';
-import PrimaryLink from '@/components/links/PrimaryLink';
-import UnderlineLink from '@/components/links/UnderlineLink';
-import UnstyledLink from '@/components/links/UnstyledLink';
 import NextImage from '@/components/NextImage';
 import Seo from '@/components/Seo';
 import Skeleton from '@/components/Skeleton';
 
 import Heading from '@/typography/Headings/Heading';
 import Paragraph from '@/typography/Paragraph/Paragraph';
+import Button from '@/ui/buttons/Button';
+import ArrowLink from '@/ui/links/ArrowLink';
+import ButtonLink from '@/ui/links/ButtonLink';
+import PrimaryLink from '@/ui/links/PrimaryLink';
+import UnderlineLink from '@/ui/links/UnderlineLink';
+import UnstyledLink from '@/ui/links/UnstyledLink';
 
 type Color = typeof colorList[number];
 
