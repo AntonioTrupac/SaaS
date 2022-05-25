@@ -1,0 +1,5 @@
+mutation Register($input: NewAuthUser!){
+    auth  {
+        register(input: $input)
+    }
+}

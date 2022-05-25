@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"github.com/rs/cors"
 	"log"
 	"net/http"
 	"os"
@@ -18,7 +19,6 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 
-	"github.com/rs/cors"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 
@@ -67,15 +67,15 @@ func main() {
 	}(sqlDb)
 
 	router := mux.NewRouter()
-
-	router.Use(middleware.AuthMiddleware)
 	router.Use(cors.New(cors.Options{
 		AllowedOrigins:   []string{"http://localhost:3000"},
 		AllowedMethods:   []string{},
 		AllowedHeaders:   []string{},
 		AllowCredentials: true,
-		Debug:            true,
 	}).Handler)
+
+	router.Use(middleware.AuthMiddleware)
+
 	productsService := productService.NewProducts(database)
 	usersService := userService.NewUsers(database)
 	moodsService := moodService.NewMoods(database)

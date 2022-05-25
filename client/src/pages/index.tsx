@@ -1,15 +1,11 @@
 import * as React from 'react';
 
-import useMoodTypes from '@/hooks/useMoodTypes';
-
 import Register from '@/components/form/Register';
 import Layout from '@/components/layout/Layout';
 import ButtonLink from '@/components/links/ButtonLink';
 import Seo from '@/components/Seo';
 
 export default function HomePage() {
-  const { moodTypes } = useMoodTypes();
-
   return (
     <Layout>
       {/* <Seo templateTitle='Home' /> */}
@@ -21,11 +17,7 @@ export default function HomePage() {
             <ButtonLink className='mt-6' href='/components' variant='light'>
               See all components
             </ButtonLink>
-            <div>
-              {moodTypes?.map((moodType) => {
-                return <div key={moodType.id}>{moodType.name}</div>;
-              })}
-            </div>
+
             <Register />
           </div>
         </section>

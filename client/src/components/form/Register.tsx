@@ -1,8 +1,12 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
+import useRegisterMutation from '@/hooks/useRegisterMutation';
+
 import Button from '@/components/buttons/Button';
 import { registerValidationSchema } from '@/components/form/validation';
+
+import { RegisterVariables } from '@/graphql';
 
 import Form from './Form';
 
@@ -16,6 +20,8 @@ type IFormInput = {
 };
 
 const Register = () => {
+  const mutation = useRegisterMutation();
+  const { mutate } = mutation;
   const {
     register,
     handleSubmit,
@@ -35,8 +41,27 @@ const Register = () => {
   });
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    // eslint-disable-next-line no-console
-    console.log(data);
+    const mappedData: RegisterVariables = {
+      input: {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        age: 18,
+        password: data.password,
+        phone: '094-4459-3434',
+        address: [
+          {
+            city: data.city,
+            addressLine: 'Donja Svarca',
+            country: data.country,
+            postalCode: 47250,
+          },
+        ],
+      },
+    };
+
+    console.log(mappedData);
+    mutate(mappedData);
     reset();
   };
 
