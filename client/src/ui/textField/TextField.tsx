@@ -1,40 +1,54 @@
-import { PropsWithChildren } from 'react';
-import { UseFormRegister } from 'react-hook-form';
+import { type PropsWithChildren } from 'react';
+import { FieldErrors, UseFormRegister } from 'react-hook-form';
 
-import { IFormInput } from '@/ui/form/Register';
+import { type IFormInput } from '@/ui/form/Register';
 import Input, {
   type InputFieldName,
   type InputType,
-  type InputVariant,
 } from '@/ui/textField/Input';
 import Label from '@/ui/textField/Label';
 
+type States = {
+  isError?: boolean;
+  isDisabled?: boolean;
+  isSuccess?: boolean;
+};
+
 type TextFieldProps = {
-  variant?: keyof typeof InputVariant;
   type?: InputType;
   register: UseFormRegister<IFormInput>;
   inputFieldName: InputFieldName;
-  disabled: boolean;
   placeholder: string;
+  states: States;
+  errors: FieldErrors<IFormInput>;
 };
 
 const TextField = ({
   placeholder,
-  disabled = false,
   type,
   register,
   inputFieldName,
+  states,
+  errors,
 }: PropsWithChildren<TextFieldProps>) => {
   return (
     <div className='my-4'>
       <Label htmlFor={inputFieldName} name={placeholder} />
+
       <Input
         placeholder={placeholder}
-        disabled={disabled}
         type={type}
         register={register}
         inputFieldName={inputFieldName}
+        states={states}
+        errors={errors}
       />
+
+      {!states.isDisabled && (
+        <p className='text-l mt-[8px] text-left text-xs font-light text-red-700'>
+          {errors?.[inputFieldName]?.message}
+        </p>
+      )}
     </div>
   );
 };

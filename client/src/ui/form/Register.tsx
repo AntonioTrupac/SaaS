@@ -1,4 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import useRegisterMutation from '@/hooks/useRegisterMutation';
@@ -19,9 +20,21 @@ export type IFormInput = {
   city: string;
 };
 
+type State = {
+  isLoading: boolean;
+  isError: boolean;
+  isSuccess: boolean;
+};
+
 const Register = () => {
   const mutation = useRegisterMutation();
-  const { mutate } = mutation;
+  const { mutate, isLoading, isError, isSuccess } = mutation;
+  const [states] = useState<State>({
+    isLoading,
+    isError,
+    isSuccess,
+  });
+
   const {
     register,
     handleSubmit,
@@ -71,7 +84,8 @@ const Register = () => {
         register={register}
         inputFieldName='firstName'
         placeholder='First Name'
-        disabled={false}
+        states={states}
+        errors={errors}
       />
       {/*<input type='text' {...register('firstName')} placeholder='First Name' />*/}
       {/*<p>{errors.firstName?.message}</p>*/}
