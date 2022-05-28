@@ -10,7 +10,6 @@ const useQueryStatusLogging = (
 ) => {
   React.useEffect(() => {
     if (isFetching) {
-      // eslint-disable-next-line no-console
       console.log(Date.now(), `Fetching ${text}...`);
     }
   }, [isFetching, text]);

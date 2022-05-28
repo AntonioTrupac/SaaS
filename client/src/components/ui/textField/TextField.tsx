@@ -1,12 +1,11 @@
 import { type PropsWithChildren } from 'react';
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
 
-import { type IFormInput } from '@/ui/form/Register';
+import { type IFormInput } from '@/components/form/Register';
 import Input, {
   type InputFieldName,
   type InputType,
-} from '@/ui/textField/Input';
-import Label from '@/ui/textField/Label';
+} from '@/components/ui/textField/Input';
 
 type States = {
   isError?: boolean;
@@ -32,9 +31,7 @@ const TextField = ({
   errors,
 }: PropsWithChildren<TextFieldProps>) => {
   return (
-    <div className='my-4'>
-      <Label htmlFor={inputFieldName} name={placeholder} />
-
+    <div>
       <Input
         placeholder={placeholder}
         type={type}
@@ -45,7 +42,11 @@ const TextField = ({
       />
 
       {!states.isDisabled && (
-        <p className='text-l mt-[8px] text-left text-xs font-light text-red-700'>
+        <p
+          className={`text-l mt-[8px] text-left text-xs font-light text-red-700 ${
+            !errors?.[inputFieldName]?.message ? 'hidden' : 'block'
+          }`}
+        >
           {errors?.[inputFieldName]?.message}
         </p>
       )}

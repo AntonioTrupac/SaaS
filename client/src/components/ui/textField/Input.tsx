@@ -3,7 +3,7 @@ import { type FieldErrors, UseFormRegister } from 'react-hook-form';
 
 import clsxm from '@/lib/clsxm';
 
-import { type IFormInput } from '@/ui/form/Register';
+import { type IFormInput } from '@/components/form/Register';
 
 type States = {
   isError?: boolean;
@@ -39,7 +39,7 @@ const classes = {
     }`,
   success:
     'focus:outline-none focus:border-success-400 focus:border focus:ring-2 focus:ring-success-400',
-  error: 'ring-2 ring-danger-400 bg-secondary-75 placeholder:text-danger-200',
+  error: 'ring-2 ring-danger-400 bg-secondary-75',
   disabled: 'disabled:bg-neutrals-60 disabled:shadow-none',
 };
 

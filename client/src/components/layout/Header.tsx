@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import UnstyledLink from '@/ui/links/UnstyledLink';
+import UnstyledLink from '@/components/ui/links/UnstyledLink';
 
 const links = [
   { href: '/', label: 'Route 1' },

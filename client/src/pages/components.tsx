@@ -5,15 +5,15 @@ import Layout from '@/components/layout/Layout';
 import NextImage from '@/components/NextImage';
 import Seo from '@/components/Seo';
 import Skeleton from '@/components/Skeleton';
+import Button from '@/components/ui/buttons/Button';
+import ArrowLink from '@/components/ui/links/ArrowLink';
+import ButtonLink from '@/components/ui/links/ButtonLink';
+import PrimaryLink from '@/components/ui/links/PrimaryLink';
+import UnderlineLink from '@/components/ui/links/UnderlineLink';
+import UnstyledLink from '@/components/ui/links/UnstyledLink';
 
 import Heading from '@/typography/Headings/Heading';
 import Paragraph from '@/typography/Paragraph/Paragraph';
-import Button from '@/ui/buttons/Button';
-import ArrowLink from '@/ui/links/ArrowLink';
-import ButtonLink from '@/ui/links/ButtonLink';
-import PrimaryLink from '@/ui/links/PrimaryLink';
-import UnderlineLink from '@/ui/links/UnderlineLink';
-import UnstyledLink from '@/ui/links/UnstyledLink';
 
 type Color = typeof colorList[number];
 

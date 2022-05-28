@@ -1,6 +1,6 @@
 import { useRegister } from '@/graphql';
 
-import { useGraphQLClient } from './useGraphQLClient';
+import { useGraphQLClient } from '../useGraphQLClient';
 
 const useRegisterMutation = () => {
   const { graphQLClient } = useGraphQLClient();
