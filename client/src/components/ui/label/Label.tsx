@@ -12,8 +12,6 @@ type LabelProps = {
 
 type Props = LabelProps & ComponentPropsWithoutRef<'label'>;
 
-const classes: { [p: string]: string | (() => string) } = {};
-
 const Label = ({ name, htmlFor, className, ...props }: Props) => {
   return (
     <label htmlFor={htmlFor} {...props} className=''>

@@ -274,16 +274,9 @@ Snippets such as React import, useState, useEffect, React Component. [View more]
 
 - #### Open Graph Generator
 
-    | ![image](https://user-images.githubusercontent.com/55318172/137617070-806a0509-84bd-4cae-a900-2ab17e418d8d.png) | ![image](https://user-images.githubusercontent.com/55318172/137617090-c24f684a-bfe5-41b6-8ba9-fa99bae5cadf.png) |
-    | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-
     Open Graph is generated using [og.thcl.dev](https://og.thcl.dev), but please fork and self-host if your website is going to have a lot of traffic.
 
     Check out the [repository](https://github.com/theodorusclarence/og) to see the API parameters.
-
-- #### Preloaded & Self Hosted Inter Fonts
-
-    Inter fonts is a variable fonts that is self hosted and preloaded.
 
 ## Snippets
 

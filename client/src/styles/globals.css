@@ -2,16 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  font-family: 'Roboto', sans-serif;
+}
 
 @layer base {
-  /* inter var - latin */
-  @font-face {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 100 900;
-    font-display: optional;
-  }
-
   .cursor-newtab {
     cursor: url('/images/new-tab.png') 10 10, pointer;
   }
