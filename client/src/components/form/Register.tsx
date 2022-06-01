@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import useRegisterMutation from '@/hooks/mutations/useRegisterMutation';
+import useCountries from '@/hooks/queries/useCountries';
 
 import { registerValidationSchema } from '@/components/form/validation';
 import Button from '@/components/ui/buttons/Button';
@@ -31,6 +32,8 @@ type State = {
 };
 
 const Register = () => {
+  const { data } = useCountries();
+  console.log(data);
   const mutation = useRegisterMutation();
   const { mutate, isLoading, isError, isSuccess } = mutation;
   const [mutationStates] = useState<State>({

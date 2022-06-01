@@ -62,7 +62,6 @@ const Input = forwardRef<HTMLInputElement, Props>(
     ref
   ) => {
     const errorMessage = errors?.[fieldName]?.message;
-    console.log('RENDER');
 
     return (
       <span className='relative block'>
