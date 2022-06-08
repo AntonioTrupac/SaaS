@@ -1,21 +1,30 @@
 import axios from 'axios';
 import { useQuery } from 'react-query';
 
-type Country =
-  | {
-      id: number;
-      name: string;
-    }
-  | undefined;
+export type APICountryType = {
+  name: {
+    common: string;
+    official: string;
+  };
+};
 
-const fetchAllCountries = async () => {
-  const response = await axios.get('/api/countries');
+export type Country = {
+  name?: string;
+};
 
-  if (response.status === 200) {
-    return response.data;
+export const fetchAllCountries = async () => {
+  const response = await axios.get('https://restcountries.com/v3.1/all', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (response.status >= 400 && response.status <= 500) {
+    throw new Error('ERROR! Could not fetch countries!');
   }
 
-  return undefined;
+  return response.data.map((country: APICountryType) => country.name.common);
 };
 
 const useCountries = () => {
@@ -26,7 +35,7 @@ const useCountries = () => {
     isError: isErrorCountries,
     error,
   } = useQuery<Country[]>('countries', fetchAllCountries, {
-    refetchOnMount: true,
+    refetchOnMount: false,
     refetchOnWindowFocus: false,
   });
 

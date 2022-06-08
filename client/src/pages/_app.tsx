@@ -1,5 +1,5 @@
 import { AppProps } from 'next/app';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 
 import '@/styles/globals.css';
@@ -12,7 +12,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <GraphQLClientProvider>
       <QueryClientProvider client={queryClient}>
-        <Component {...pageProps} />
+        <Hydrate state={pageProps.dehydratedState}>
+          <Component {...pageProps} />
+        </Hydrate>
         <ReactQueryDevtools />
       </QueryClientProvider>
     </GraphQLClientProvider>

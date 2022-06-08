@@ -9,6 +9,7 @@ import { registerValidationSchema } from '@/components/form/validation';
 import Button from '@/components/ui/buttons/Button';
 import Input from '@/components/ui/inputs/Input';
 import InputError from '@/components/ui/inputs/InputError';
+import Select from '@/components/ui/inputs/Select';
 import Label from '@/components/ui/label/Label';
 
 import { RegisterVariables } from '@/graphql';
@@ -33,7 +34,7 @@ type State = {
 
 const Register = () => {
   const { data } = useCountries();
-  console.log(data);
+
   const mutation = useRegisterMutation();
   const { mutate, isLoading, isError, isSuccess } = mutation;
   const [mutationStates] = useState<State>({
@@ -161,13 +162,12 @@ const Register = () => {
 
       <div className='my-1.5 w-full'>
         <Label htmlFor='country' name='Country' />
-        <Input
-          type='text'
-          {...register('country')}
+        <Select
+          country={data}
           fieldName='country'
-          placeholder='Country'
           states={mutationStates}
-          errors={errors}
+          errorMessage={errors.country?.message}
+          {...register('country')}
         />
         <InputError
           errors={errors}
@@ -192,8 +192,6 @@ const Register = () => {
           states={mutationStates}
         />
       </div>
-
-      {/*<input type='text' /> TODO: GET ALL THE COUNTRIES API AND PREPARE A SELECT FIELD WITH AN AUTOCOMPLETE */}
 
       <Button
         variant='primary'

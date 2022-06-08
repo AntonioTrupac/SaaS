@@ -28,9 +28,7 @@ type InputProps = {
   iconRight?: ReactNode;
 };
 
-type Props = InputProps &
-  // ComponentPropsWithRef<'input'> &
-  InputHTMLAttributes<HTMLInputElement>;
+type Props = InputProps & InputHTMLAttributes<HTMLInputElement>;
 
 const classes = {
   general:
