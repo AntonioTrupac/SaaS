@@ -265,6 +265,14 @@ export type RegisterVariables = Exact<{
 
 export type Register = { __typename?: 'Mutation', auth: { __typename?: 'AuthOps', register: any } };
 
+export type LoginVariables = Exact<{
+  email: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+
+export type Login = { __typename?: 'Mutation', auth: { __typename?: 'AuthOps', login: any } };
+
 export type GetMoodTypesVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -289,6 +297,26 @@ export const useRegister = <
     useMutation<Register, TError, RegisterVariables, TContext>(
       ['Register'],
       (variables?: RegisterVariables) => fetcher<Register, RegisterVariables>(client, RegisterDocument, variables, headers)(),
+      options
+    );
+export const LoginDocument = `
+    mutation Login($email: String!, $password: String!) {
+  auth {
+    login(email: $email, password: $password)
+  }
+}
+    `;
+export const useLogin = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<Login, TError, LoginVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<Login, TError, LoginVariables, TContext>(
+      ['Login'],
+      (variables?: LoginVariables) => fetcher<Login, LoginVariables>(client, LoginDocument, variables, headers)(),
       options
     );
 export const GetMoodTypesDocument = `

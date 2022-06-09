@@ -3,3 +3,9 @@ mutation Register($input: NewAuthUser!){
         register(input: $input)
     }
 }
+
+mutation Login($email: String!, $password: String!) {
+    auth {
+        login(email: $email, password: $password)
+    }
+}

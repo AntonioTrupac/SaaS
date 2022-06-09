@@ -12,3 +12,12 @@ export const registerValidationSchema = Yup.object().shape({
   country: Yup.string().required('Country is required'),
   city: Yup.string().required('City is required'),
 });
+
+export const loginValidationSchema = Yup.object().shape({
+  email: Yup.string()
+    .email('Field should contain a valid email')
+    .required('Email is required'),
+  password: Yup.string()
+    .required('Password is required')
+    .min(6, 'Password is too short - should be 6 chars minimum'),
+});

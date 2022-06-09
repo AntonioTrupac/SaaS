@@ -33,6 +33,9 @@ const classes = {
       errorMessage ? 'focus:ring-danger-400' : 'focus:ring-primary-200'
     }`,
   error: 'ring-2 ring-danger-400 bg-secondary-75',
+  success:
+    'focus:outline-none focus:border-success-400 focus:border focus:ring-2 focus:ring-success-400',
+  disabled: 'disabled:bg-neutrals-60 disabled:shadow-none',
 };
 
 const Select = forwardRef<HTMLSelectElement, Props>(
@@ -53,7 +56,9 @@ const Select = forwardRef<HTMLSelectElement, Props>(
           className={clsxm(
             classes.general,
             classes.focus(errorMessage),
-            isError || (errorMessage && classes.error)
+            isError || (errorMessage && classes.error),
+            isSuccess && classes.success,
+            isDisabled && classes.disabled
           )}
           name={name}
           ref={ref}

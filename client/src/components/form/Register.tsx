@@ -9,8 +9,8 @@ import { registerValidationSchema } from '@/components/form/validation';
 import Button from '@/components/ui/buttons/Button';
 import Input from '@/components/ui/inputs/Input';
 import InputError from '@/components/ui/inputs/InputError';
-import Select from '@/components/ui/inputs/Select';
 import Label from '@/components/ui/label/Label';
+import Select from '@/components/ui/select/Select';
 
 import { RegisterVariables } from '@/graphql';
 import Heading from '@/typography/Headings/Heading';
@@ -26,7 +26,7 @@ export type IFormInput = {
   city: string;
 };
 
-type State = {
+export type State = {
   isLoading: boolean;
   isError: boolean;
   isSuccess: boolean;
@@ -87,116 +87,121 @@ const Register = () => {
   };
 
   return (
-    <Form className='flex flex-col' onSubmit={handleSubmit(onSubmit)}>
+    <Form
+      className='flex w-full flex-col items-center lg:w-[320px]'
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <Heading variant='h2' isBold className='mb-[18px] text-left'>
         Sign in
       </Heading>
 
-      <div className='my-1.5 w-full'>
-        <Label htmlFor='firstName' name='First Name' />
-        <Input
-          type='text'
-          {...register('firstName')}
-          fieldName='firstName'
-          placeholder='First Name'
-          states={mutationStates}
-          errors={errors}
-        />
-        <InputError
-          errors={errors}
-          inputFieldName='firstName'
-          states={mutationStates}
-        />
-      </div>
+      <section className='w-full lg:w-[320px]'>
+        <div className='my-1.5 w-full'>
+          <Label htmlFor='firstName' name='First Name' />
+          <Input
+            type='text'
+            {...register('firstName')}
+            fieldName='firstName'
+            placeholder='First Name'
+            states={mutationStates}
+            errors={errors}
+          />
+          <InputError
+            errors={errors}
+            inputFieldName='firstName'
+            states={mutationStates}
+          />
+        </div>
 
-      <div className='my-1.5 w-full'>
-        <Label htmlFor='lastName' name='Last Name' />
-        <Input
-          type='text'
-          {...register('lastName')}
-          fieldName='lastName'
-          placeholder='Last Name'
-          states={mutationStates}
-          errors={errors}
-        />
-        <InputError
-          errors={errors}
-          inputFieldName='lastName'
-          states={mutationStates}
-        />
-      </div>
+        <div className='my-1.5 w-full'>
+          <Label htmlFor='lastName' name='Last Name' />
+          <Input
+            type='text'
+            {...register('lastName')}
+            fieldName='lastName'
+            placeholder='Last Name'
+            states={mutationStates}
+            errors={errors}
+          />
+          <InputError
+            errors={errors}
+            inputFieldName='lastName'
+            states={mutationStates}
+          />
+        </div>
 
-      <div className='my-1.5 w-full'>
-        <Label htmlFor='email' name='Email' />
-        <Input
-          type='email'
-          {...register('email')}
-          fieldName='email'
-          placeholder='Email'
-          states={mutationStates}
-          errors={errors}
-        />
-        <InputError
-          errors={errors}
-          inputFieldName='email'
-          states={mutationStates}
-        />
-      </div>
+        <div className='my-1.5 w-full'>
+          <Label htmlFor='email' name='Email' />
+          <Input
+            type='email'
+            {...register('email')}
+            fieldName='email'
+            placeholder='Email'
+            states={mutationStates}
+            errors={errors}
+          />
+          <InputError
+            errors={errors}
+            inputFieldName='email'
+            states={mutationStates}
+          />
+        </div>
 
-      <div className='my-1.5 w-full'>
-        <Label htmlFor='password' name='Password' />
-        <Input
-          type='password'
-          {...register('password')}
-          fieldName='password'
-          placeholder='Password'
-          states={mutationStates}
-          errors={errors}
-        />
-        <InputError
-          errors={errors}
-          inputFieldName='password'
-          states={mutationStates}
-        />
-      </div>
+        <div className='my-1.5 w-full'>
+          <Label htmlFor='password' name='Password' />
+          <Input
+            type='password'
+            {...register('password')}
+            fieldName='password'
+            placeholder='Password'
+            states={mutationStates}
+            errors={errors}
+          />
+          <InputError
+            errors={errors}
+            inputFieldName='password'
+            states={mutationStates}
+          />
+        </div>
 
-      <div className='my-1.5 w-full'>
-        <Label htmlFor='country' name='Country' />
-        <Select
-          country={data}
-          fieldName='country'
-          states={mutationStates}
-          errorMessage={errors.country?.message}
-          {...register('country')}
-        />
-        <InputError
-          errors={errors}
-          inputFieldName='country'
-          states={mutationStates}
-        />
-      </div>
+        <div className='my-1.5 w-full'>
+          <Label htmlFor='country' name='Country' />
+          <Select
+            country={data}
+            fieldName='country'
+            states={mutationStates}
+            errorMessage={errors.country?.message}
+            {...register('country')}
+          />
+          <InputError
+            errors={errors}
+            inputFieldName='country'
+            states={mutationStates}
+          />
+        </div>
 
-      <div className='mt-1.5 w-full'>
-        <Label htmlFor='city' name='City' />
-        <Input
-          type='text'
-          {...register('city')}
-          fieldName='city'
-          placeholder='City'
-          states={mutationStates}
-          errors={errors}
-        />
-        <InputError
-          errors={errors}
-          inputFieldName='city'
-          states={mutationStates}
-        />
-      </div>
+        <div className='mt-1.5 w-full'>
+          <Label htmlFor='city' name='City' />
+          <Input
+            type='text'
+            {...register('city')}
+            fieldName='city'
+            placeholder='City'
+            states={mutationStates}
+            errors={errors}
+          />
+          <InputError
+            errors={errors}
+            inputFieldName='city'
+            states={mutationStates}
+          />
+        </div>
+      </section>
 
       <Button
         variant='primary'
         type='submit'
-        className='mt-12'
+        className='mt-12 lg:w-[320px]'
         disabled={isLoading}
       >
         Register
