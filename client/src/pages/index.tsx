@@ -4,7 +4,7 @@ import { dehydrate, DehydratedState, QueryClient } from 'react-query';
 
 import { fetchAllCountries } from '@/hooks/queries/useCountries';
 
-import Register from '@/components/form/Register';
+import { Login } from '@/components/form';
 import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
 
@@ -28,7 +28,8 @@ export default function HomePage() {
       <main>
         <section className='bg-secondary-50'>
           <div className='layout flex min-h-screen flex-col items-center justify-center text-center'>
-            <Register />
+            {/*<Register />*/}
+            <Login />
           </div>
         </section>
       </main>

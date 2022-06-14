@@ -10,7 +10,7 @@ const useLoginMutation = () => {
       console.log(login);
     },
     onSuccess: (data) => {
-      console.log(`REGISTRATION SUCCESSFUL!`, data);
+      console.log(`LOGIN SUCCESSFUL!`, data);
     },
     onError: (err) => {
       console.error(err);
